@@ -26,10 +26,10 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->version   = 2016082700;        // The current plugin version (Date: YYYYMMDDXX)
-$plugin->requires  = 2014050800;        // Requires this Moodle version
+$plugin->requires  = 2015050500;        // Requires this Moodle version
 $plugin->component = 'block_shop_course_seats'; // Full name of the plugin (used for diagnostics)
 $plugin->maturity = MATURITY_BETA; // Full name of the plugin (used for diagnostics)
-$plugin->release = '2.7.0 (Build 2013050300)'; // Full name of the plugin (used for diagnostics)
+$plugin->release = '2.9.0 (Build 2013050300)'; // Full name of the plugin (used for diagnostics)
 
 // Non Moodle fields
 // This fields will help overmanagement code builders without forcing upgrade to play
