@@ -1,0 +1,84 @@
+.cs-course-seat-expired{
+    background-color:#F00000;
+    color:white;
+    font-weight:bolder;
+    padding:3px;
+}
+
+.cs-course-seat-expireddate{
+    color:#F00000;
+}
+
+.cs-course-seat-expiring{
+    background-color:#F08000;
+    color:white;
+    font-weight:bolder;
+    padding:3px;
+}
+
+.cs-course-seat-expiringdate{
+    color:#F08000;
+}
+
+.cs-course-seat-running{
+    background-color:#00A000;
+    color:white;
+    font-weight:bolder;
+    padding:3px;
+}
+
+.cs-course-seat-unused{
+    background-color:#BDC4D9;
+    color:#51608C;
+    font-weight:bolder;
+    padding:3px;
+}
+
+.cs-course-seat-expiringdate{
+    color:#00A000;
+}
+
+.cs-course-seat-code{
+    font-family:monospace;
+}
+
+.cs-course-seat-key{
+    display:table-cell;
+    font-weight:bolder;
+    width:150px;
+    padding:3px;
+}
+
+.cs-course-seat-value{
+    display:table-cell;
+    font-weight:normal;
+    width:70%;
+    padding:3px;
+}
+
+.cs-course-seat-value.monospace{
+    font-family:monospace;
+}
+
+.cs-course-seat-bill{
+    font-size:2.5em;
+    line-height:2.2em;
+}
+
+.cs-course-seat-date{
+}
+
+.cs-course-seat-billitem{
+    display:table-cell;
+    font-size:1.5em;
+    line-height:1.2em;
+}
+
+#cs-course-seat-toggler {
+    float:right;
+}
+
+/* Initial state */
+#cs-course-seats {
+    display:none;
+}
