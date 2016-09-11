@@ -8,6 +8,7 @@ $string['configtitle'] = 'Title';
 $string['configshopinstance'] = 'Reference shop instance';
 $string['leaveblanktohide'] = 'Leave blank to hide';
 $string['noseats'] = 'No free seats in your account';
+$string['noseatsforthiscourse'] = 'You have seats but none usable for this course.';
 $string['noshops'] = 'no shops';
 $string['startdate'] = 'Start';
 $string['enddate'] = 'End';
@@ -31,3 +32,5 @@ $string['unlimited'] = 'Unlimited';
 $string['assignseats'] = 'Assign available seats';
 $string['addinguser'] = 'Adding user {$a->firstname} {$a->lastname}';
 $string['notenoughseats'] = 'Not enough seats to complete';
+$string['newgroup'] = '(New group)';
+
