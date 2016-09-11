@@ -33,5 +33,4 @@ $plugin->release = '3.1.0 (Build 2013050300)'; // Full name of the plugin (used 
 
 // Non Moodle fields
 // This fields will help overmanagement code builders without forcing upgrade to play
-$plugin->codeversion = 2016082700.00;
-$plugin->codeincrement = 0;
+$plugin->codeincrement = '3.1.0002';
