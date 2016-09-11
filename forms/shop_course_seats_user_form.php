@@ -15,12 +15,13 @@ class ShopCourseSeatsUser_Form extends moodleform {
 
         $mform->addElement('header', 'h0', get_string('group'), '');
         if (!empty($this->_customdata['groups'])) {
-            $mform->addElement('select', 'group', get_string('groupname'), $this->_customdata['groups']);
+            $mform->addElement('select', 'group', get_string('group'), $this->_customdata['groups']);
         }
 
         $mform->addElement('text', 'newgroup', get_string('newgroup', 'block_shop_course_seats'));
         $mform->disabledIf('newgroup', 'group', 'neq', '');
-        $mform->addRule('newgroup', 'required');
+        $mform->addRule('newgroup', null, 'required', null, 'client');
+        $mform->setType('newgroup', PARAM_TEXT);
 
         $this->add_action_buttons(get_string('assignseats', 'block_shop_course_seats'));
 

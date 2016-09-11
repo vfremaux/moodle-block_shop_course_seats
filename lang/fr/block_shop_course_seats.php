@@ -32,4 +32,4 @@ $string['unlimited'] = 'Illimité';
 $string['assignseats'] = 'Attribuer des sièges';
 $string['addinguser'] = 'Ajout d\'un utilisateur {$a->firstname} {$a->lastname}';
 $string['notenoughseats'] = 'Plus assez de sièges pour terminer les inscriptions.';
-$string['newgroup'] = 'Nouveau groupe';
+$string['newgroup'] = '(Nouveau groupe)';

@@ -32,5 +32,5 @@ $string['unlimited'] = 'Unlimited';
 $string['assignseats'] = 'Assign available seats';
 $string['addinguser'] = 'Adding user {$a->firstname} {$a->lastname}';
 $string['notenoughseats'] = 'Not enough seats to complete';
-$string['newgroup'] = 'New group';
+$string['newgroup'] = '(New group)';
 

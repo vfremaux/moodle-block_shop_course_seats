@@ -27,7 +27,7 @@ require_once($CFG->dirroot.'/blocks/shop_course_seats/locallib.php');
 require_once($CFG->dirroot.'/local/shop/classes/Shop.class.php');
 require_once($CFG->dirroot.'/local/shop/classes/Product.class.php');
 require_once($CFG->dirroot.'/local/shop/classes/BillItem.class.php');
-require_once($CFG->dirroot.'/blocks/shop_course_seats/forms/shopcourseseatsuserform.php');
+require_once($CFG->dirroot.'/blocks/shop_course_seats/forms/shop_course_seats_user_form.php');
 
 use \local_shop\Shop;
 use \local_shop\Product;
@@ -73,17 +73,52 @@ foreach ($products as $p) {
 $renderer = $PAGE->get_renderer('block_shop_course_seats');
 $renderer->load_context($theShop, $theblock);
 
-$mygroups = groups_get_all_groups($COURSE->id, $USER->id);
-$mygroups = array_merge(array('' => get_string('newgroup', 'block_shop_course_seats')),$mygroups);
+$groupopts = array('' => get_string('newgroup', 'block_shop_course_seats'));
+if ($mygroups = groups_get_all_groups($COURSE->id, $USER->id)) {
+    foreach ($mygroups as $gid => $g) {
+        $groupopts[$gid] = $g->name;
+    }
+}
 
-$userform = new ShopCourseSeatsUser_Form($url, array('groups' => $mygroups));
+$userform = new ShopCourseSeatsUser_Form($url, array('groups' => $groupopts));
 
 if ($userform->is_cancelled()) {
     redirect(new moodle_url('/course/view.php', array('id' => $course->id)));
 }
 
-if ($userform->get_data()) {
+if ($data = $userform->get_data()) {
     $ret = '';
+
+    // Create required group if missing
+    if (!empty($data->newgroup)) {
+        if (!$group = $DB->get_record('groups', array('courseid' => $course->id, 'name' => $USER->id.'_'.$data->newgroup))) {
+            $group = new StdClass;
+            $group->courseid = $course->id;
+            $group->name = $USER->id.'_'.$data->newgroup;
+            $group->idnumber = '';
+            $group->description = '';
+            $group->descriptionformat = 0;
+            $group->id = $DB->insert_record('groups', $group);
+
+            // Invalidate the grouping cache for the course
+            cache_helper::invalidate_by_definition('core', 'groupdata', array(), array($course->id));
+
+            // Trigger group event.
+            $params = array(
+                'context' => $context,
+                'objectid' => $group->id
+            );
+            $event = \core\event\group_created::create($params);
+            $event->add_record_snapshot('groups', $group);
+            $event->trigger();
+
+            // Add me to group.
+            groups_add_member($group, $USER);
+        }
+    } else {
+        $group = $DB->get_record('groups', array('id' => $data->group));
+    }
+
     // We are confirming assigning new users.
     foreach ($SESSION->shopseats->participants as $p) {
 
@@ -108,6 +143,9 @@ if ($userform->get_data()) {
             $potential = shop_create_moodle_user($p, $billitem, $supervisorrole);
         }
         list($handler, $methodname) = $product->get_handler_info('assignseat_worker');
+
+        // Add member to group.
+        groups_add_member($group, $potential);
 
         $data = new Stdclass;
         $data->courseid = $course->id;
