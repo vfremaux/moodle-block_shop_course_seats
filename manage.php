@@ -73,7 +73,10 @@ foreach ($products as $p) {
 $renderer = $PAGE->get_renderer('block_shop_course_seats');
 $renderer->load_context($theShop, $theblock);
 
-$userform = new ShopCourseSeatsUser_Form();
+$mygroups = groups_get_all_groups($COURSE->id, $USER->id);
+$mygroups = array_merge(array('' => get_string('newgroup', 'block_shop_course_seats')),$mygroups);
+
+$userform = new ShopCourseSeatsUser_Form($url, array('groups' => $mygroups));
 
 if ($userform->is_cancelled()) {
     redirect(new moodle_url('/course/view.php', array('id' => $course->id)));
