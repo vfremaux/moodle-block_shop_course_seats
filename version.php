@@ -15,22 +15,22 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version details
+ * Version details.
  *
- * @package    block_shop_course_seats
- * @category   blocks
- * @copyright  2016 Valery Fremaux (valery.fremaux@gmail.com)
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package     block_shop_course_seats
+ * @category    blocks
+ * @author      Valery Fremaux <valery.fremaux@gmail.com>
+ * @copyright   2016 Valery Fremaux (http://www.mylearningfactory.com)
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2016082700;        // The current plugin version (Date: YYYYMMDDXX)
-$plugin->requires  = 2015111000;        // Requires this Moodle version
-$plugin->component = 'block_shop_course_seats'; // Full name of the plugin (used for diagnostics)
-$plugin->maturity = MATURITY_BETA; // Full name of the plugin (used for diagnostics)
-$plugin->release = '3.0.0 (Build 2013050300)'; // Full name of the plugin (used for diagnostics)
+$plugin->version   = 2016082700;        // The current plugin version (Date: YYYYMMDDXX).
+$plugin->requires  = 2015111000;        // Requires this Moodle version.
+$plugin->component = 'block_shop_course_seats'; // Full name of the plugin (used for diagnostics).
+$plugin->maturity = MATURITY_BETA;
+$plugin->release = '3.0.0 (Build 2013050300)';
 
-// Non Moodle fields
-// This fields will help overmanagement code builders without forcing upgrade to play
-$plugin->codeincrement = '3.0.0002';
+// Non Moodle attributes.
+$plugin->codeincrement = '3.0.0000';

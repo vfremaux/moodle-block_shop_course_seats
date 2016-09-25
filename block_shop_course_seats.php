@@ -92,7 +92,7 @@ class block_shop_course_seats extends block_base {
             if ($COURSE->format == 'page') {
                 $blockposition = $DB->get_record('block_positions', array('blockinstanceid' => $this->instance->id));
                 if (!$blockposition) {
-                    if (@$this->defaultregion == 'main') {
+                    if ($this->defaultregion == 'main') {
                         $wide = true;
                     }
                 } else {
@@ -108,8 +108,8 @@ class block_shop_course_seats extends block_base {
             foreach ($products as $pid => $p) {
                 $params = $this->_decode_url_parms($p->productiondata);
                 $expectedcourses = false;
-                if (!empty($params['allowedcourses'])) {
-                    $expectedcourses = explode(',', $params['allowedcourses']);
+                if (!empty($params['enabledcourses'])) {
+                    $expectedcourses = explode(',', $params['enabledcourses']);
                 }
 
                 if (!empty($expectedcourses) && !in_array($COURSE->id, $expectedcourses)) {
@@ -119,11 +119,6 @@ class block_shop_course_seats extends block_base {
                         $hasassignable = true;
                     }
                 }
-            }
-
-            if (empty($products)) {
-                $this->content->text = get_string('noseatsforthiscourse', 'block_shop_course_seats');
-                return $this->content;
             }
 
             if ($wide) {
@@ -151,7 +146,7 @@ class block_shop_course_seats extends block_base {
      * Hide the title bar when none set..
      */
     function hide_header() {
-        return false;
+        return empty($this->config->title);
     }
 
     function get_context_product_info($product) {
