@@ -14,8 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Form for editing block shop_products instances.
  *
@@ -25,9 +23,12 @@ defined('MOODLE_INTERNAL') || die();
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+defined('MOODLE_INTERNAL') || die();
+
 class block_shop_course_seats_edit_form extends block_edit_form {
+
     protected function specific_definition($mform) {
-        global $DB, $COURSE;
+        global $DB;
 
         // Fields for editing HTML block title and contents.
         $mform->addElement('header', 'configheader', get_string('blocksettings', 'block'));
@@ -38,7 +39,7 @@ class block_shop_course_seats_edit_form extends block_edit_form {
 
         $shops = $DB->get_records('local_shop');
         if ($shops){
-            foreach($shops as $sh){
+            foreach ($shops as $sh) {
                 $opts[$sh->id] = $sh->name;
             }
             $mform->addElement('select', 'config_shopinstance', get_string('configshopinstance', 'block_shop_course_seats'), $opts);
