@@ -512,9 +512,9 @@ class block_shop_course_seats_renderer extends plugin_renderer_base {
         if (!empty($roleassigns[$shortname][$role])) {
             $str .= '<div class="shop-role-list-container">';
             $str .= '<table width="100%" class="shop-role-list">';
-                foreach ($roleassigns[$role] as $participant) {
-                    $str .= $this->assignation_row($participant, $role, true);
-                }
+            foreach ($roleassigns[$role] as $participant) {
+                $str .= $this->assignation_row($participant, $role, true);
+            }
             $str .= '</table>';
             $str .= '</div>';
         } else {
@@ -522,7 +522,7 @@ class block_shop_course_seats_renderer extends plugin_renderer_base {
             $str .= '<div class="shop-role-list">';
             $str .= get_string('noassignation', 'local_shop');
             $str .= '</div>';
-            $str.= '</div>';
+            $str .= '</div>';
         }
         if (@$SESSION->shopseats->assigns < $SESSION->shopseats->seats) {
             $str .= $this->assignation_select($role, true);
