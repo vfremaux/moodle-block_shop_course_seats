@@ -89,7 +89,7 @@ if ($userform->is_cancelled()) {
 if ($data = $userform->get_data()) {
     $ret = '';
 
-    // Create required group if missing
+    // Create required group if missing.
     if (!empty($data->newgroup)) {
         if (!$group = $DB->get_record('groups', array('courseid' => $course->id, 'name' => $USER->id.'_'.$data->newgroup))) {
             $group = new StdClass;
