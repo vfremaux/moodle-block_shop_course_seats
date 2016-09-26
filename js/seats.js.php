@@ -1,4 +1,27 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * @package     block_shop_course_seats
+ * @category    blocks
+ * @author      Valery Fremaux (valery.fremaux@gmail.com)
+ * @copyright   2016 Valery Fremaux (valery.fremaux@gmail.com)
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 require('../../../config.php');
 require_once($CFG->dirroot.'/blocks/shop_course_seats/locallib.php');
 require_once($CFG->dirroot.'/local/shop/locallib.php');
@@ -12,13 +35,13 @@ header("Cache-Control: No-cache");
 $blockid = required_param('blockid', PARAM_INT);
 
 $instance = $DB->get_record('block_instances', array('id' => $blockid));
-$theBlock = block_instance('shop_course_seats', $instance);
-$theShop = new Shop($theBlock->config->shopinstance);
+$theblock = block_instance('shop_course_seats', $instance);
+$theshop = new Shop($theblock->config->shopinstance);
 
 $context = context_system::instance();
 $PAGE->set_context($context);
 
-// calculates and updates the seat count
+// Calculates and updates the seat count.
 $requiredroles = array('student', '_supervisor');
 $assigned = shop_course_seats_check_assigned_seats($requiredroles);
 ?>
@@ -39,10 +62,10 @@ function ajax_add_user(wwwroot, formobj) {
     pt.firstname = formobj.firstname.value;
     pt.email = formobj.email.value;
     pt.city = formobj.city.value;
-    <?php if (!empty($theShop->enduserorganisationrequired)) { ?>
+    <?php if (!empty($theshop->enduserorganisationrequired)) { ?>
         pt.institution = formobj.institution.value;
     <?php } 
-    if (!empty($theShop->endusermobilephonerequired)) { ?>
+    if (!empty($theshop->endusermobilephonerequired)) { ?>
         pt.phone2 = formobj.phone2.value;
     <?php } ?>
     
@@ -51,7 +74,7 @@ function ajax_add_user(wwwroot, formobj) {
     $.post(
         urlbase, 
         {
-            id: '<?php echo $theShop->id ?>',
+            id: '<?php echo $theshop->id ?>',
             blockid: '<?php echo $blockid ?>',
             action: 'addparticipant',
             participant: JSON.stringify(pt),
@@ -64,11 +87,11 @@ function ajax_add_user(wwwroot, formobj) {
             formobj.email.value = '';
             // Keep city and institution values to speed up input
             // formobj.city.value = '';
-<?php if (!empty($theShop->enduserorganisationrequired)) { ?>
+<?php if (!empty($theshop->enduserorganisationrequired)) { ?>
             // formobj.institution.value = '';
 <?php 
 }
-if (!empty($theShop->endusermobilephonerequired)) {
+if (!empty($theshop->endusermobilephonerequired)) {
 ?>
             formobj.phone2.value = '';
 <?php } ?>
@@ -80,7 +103,7 @@ if (!empty($theShop->endusermobilephonerequired)) {
             $.post(
                 urlbase, 
                 {
-                    id: '<?php echo $theShop->id ?>',
+                    id: '<?php echo $theshop->id ?>',
                     blockid: '<?php echo $blockid ?>',
                     action: 'assignalllistobj',
                 },
@@ -112,7 +135,7 @@ function ajax_delete_user(wwwroot, ptmail) {
 
     $.post(urlbase, 
         {
-            id: '<?php echo $theShop->id ?>',
+            id: '<?php echo $theshop->id ?>',
             blockid: '<?php echo $blockid ?>',
             action: 'deleteparticipant',
             participantid: ptmail,
@@ -128,7 +151,7 @@ function ajax_delete_user(wwwroot, ptmail) {
             $.post(
                 urlbase, 
                 {
-                    id: '<?php echo $theShop->id ?>',
+                    id: '<?php echo $theshop->id ?>',
                     blockid: '<?php echo $blockid ?>',
                     action: 'assignalllistobj',
                 },
@@ -161,7 +184,7 @@ function ajax_add_assign(wwwroot, assignrole, selectobj) {
     $.post(
         urlbase, 
         {
-            id: '<?php echo $theShop->id ?>',
+            id: '<?php echo $theshop->id ?>',
             blockid: '<?php echo $blockid ?>',
             action: 'addassign',
             role:assignrole,
@@ -205,7 +228,7 @@ function ajax_delete_assign(wwwroot, assignrole, email) {
     $.post(
         urlbase, 
         {
-            id: '<?php echo $theShop->id ?>',
+            id: '<?php echo $theshop->id ?>',
             blockid: '<?php echo $blockid ?>',
             action: 'deleteassign',
             role: assignrole,

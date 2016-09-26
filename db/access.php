@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Capability definitions for the inwicast module.
+ * Capability definitions.
  *
  * @package    block_shop_course_seats
  * @category   blocks
