@@ -34,15 +34,15 @@ use \local_shop\Tax;
 class block_shop_course_seats_renderer extends plugin_renderer_base {
 
     // Context references.
-    var $theblock;
+    protected $theblock; // A course seat block instance.
 
-    var $theshop;
+    protected $theshop;
 
-    var $thecatalog;
+    protected $thecatalog;
 
-    var $context;
+    public $context;
 
-    var $view;
+    public $view;
 
     /**
      * Loads the renderer with contextual objects. Most of the renderer function need
@@ -95,7 +95,7 @@ class block_shop_course_seats_renderer extends plugin_renderer_base {
         $producttable->align = array('left', 'left', 'left', 'left', 'right');
 
         foreach ($seats as $p) {
-            $pstart = ($p->startdate) ? date('Y/m/d h:i', $p->startdate) : 'N.C.' ;
+            $pstart = ($p->startdate) ? date('Y/m/d h:i', $p->startdate) : 'N.C.';
             $pstr = '['.$p->code.'] '.$p->name;
             $params = array('id' => $COURSE->id,
                             'shopid' => $this->theblock->config->shopinstance,
@@ -103,21 +103,21 @@ class block_shop_course_seats_renderer extends plugin_renderer_base {
                             'pid' => $p->id);
             $purl = new moodle_url('/blocks/shop_course_seats/product/view.php', $params);
             $status = '';
-            $productext = $theblock->get_context_product_info($p);
+            $productext = $this->theblock->get_context_product_info($p);
             $productline = '<span class="cs-course-seat-code">['.$p->reference.']</span>'.$productext;
             if ($p->renewable) {
-                $pend = ($p->enddate) ? date('Y/m/d h:i', $p->enddate) : 'N.C.';
+                $pend = ($p->enddate) ? date('Y/m/d H:i', $p->enddate) : 'N.C.';
                 if (time() > $p->enddate) {
-                    // expired
+                    // Expired.
                     $status = '<span class="cs-course-seat-expired">'.get_string('expired', 'block_shop_course_seats').'</span>';
                     $pend = '<span class="cs-course-seat-expireddate">'.$pend.'</span>';
                     $expiredcount++;
                 } else if (time() > $p->enddate - DAYSECS * 3) {
-                    // expiring
+                    // Expiring.
                     $status = '<span class="cs-course-seat-expiring">'.get_string('expiring', 'block_shop_course_seats').'</span>';
                     $pend = '<span class="cs-course-seat-expiringdate">'.$pend.'</span>';
                 } else {
-                    // running
+                    // Running.
                     $status = '<span class="cs-course-seat-running">'.get_string('running', 'block_shop_course_seats').'</span>';
                     $pend = '<span class="cs-course-seat-runningdate">'.$pend.'</span>';
                     $runningcount++;
@@ -161,9 +161,6 @@ class block_shop_course_seats_renderer extends plugin_renderer_base {
     public function product_table_narrow($seats) {
         global $COURSE, $OUTPUT;
 
-        $pidstr = get_string('pid', 'block_shop_course_seats');
-        $startdatestr = get_string('startdate', 'block_shop_course_seats');
-        $enddatestr = get_string('enddate', 'block_shop_course_seats');
         $productlinkstr = get_string('product', 'block_shop_course_seats');
         $statusstr = get_string('status', 'block_shop_course_seats');
 
@@ -180,26 +177,25 @@ class block_shop_course_seats_renderer extends plugin_renderer_base {
         foreach ($seats as $p) {
             $pstart = ($p->startdate) ? date('Y/m/d h:i', $p->startdate) : 'N.C.';
             $pstr = '['.$p->code.'] '.$p->name;
-            $params = array('id' => $COURSE->id, 
+            $params = array('id' => $COURSE->id,
                             'shopid' => $this->theblock->config->shopinstance,
                             'blockid' => $this->theblock->instance->id,
                             'pid' => $p->id);
             $purl = new moodle_url('/blocks/shop_course_seats/product/view.php', $params);
             $status = '';
-            $productext = $this->theblock->get_context_product_info($p);
             if ($p->renewable) {
                 $pend = ($p->enddate) ? date('Y/m/d h:i', $p->enddate) : 'N.C.';
                 if (time() > $p->enddate) {
-                    // expired
+                    // Expired.
                     $status = '<span class="cs-course-seat-expired">'.get_string('expired', 'block_shop_course_seats').'</span>';
                     $pend = '<span class="cs-course-seat-expireddate">'.$pend.'</span>';
                     $expiredcount++;
                 } else if (time() > $p->enddate - DAYSECS * 3) {
-                    // expiring
+                    // Expiring.
                     $status = '<span class="cs-course-seat-expiring">'.get_string('expiring', 'block_shop_course_seats').'</span>';
                     $pend = '<span class="cs-course-seat-expiringdate">'.$pend.'</span>';
                 } else {
-                    // running
+                    // Running.
                     $status = '<span class="cs-course-seat-running">'.get_string('running', 'block_shop_course_seats').'</span>';
                     $pend = '<span class="cs-course-seat-runningdate">'.$pend.'</span>';
                     $runningcount++;
@@ -245,7 +241,7 @@ class block_shop_course_seats_renderer extends plugin_renderer_base {
         global $CFG, $OUTPUT, $SITE, $PAGE;
 
         static $isuserstr;
-        static $isnotuser;
+        static $isnotuserstr;
 
         if (!isset($isuserstr)) {
             // Get strings once.
@@ -296,12 +292,12 @@ class block_shop_course_seats_renderer extends plugin_renderer_base {
             $str .= '<td align="right">';
             $str .= '<a title="'.get_string('deleteparticipant', 'local_shop').'"
                         href="Javascript:ajax_delete_user(\''.$CFG->wwwroot.'\', \''.$participant->email.'\')">';
-            $str.= '<img src="'.$OUTPUT->pix_url('t/delete').'" />';
+            $str .= '<img src="'.$OUTPUT->pix_url('t/delete').'" />';
             $str .= '</a>';
             $str .= '</td>';
             $str .= '</tr>';
         } else {
-            // print a caption row
+            // Print a caption row.
             $str .= '<tr>';
             $str .= '<th align="left">';
             $str .= get_string('lastname');
@@ -336,7 +332,6 @@ class block_shop_course_seats_renderer extends plugin_renderer_base {
     }
 
     public function participant_blankrow() {
-        global $CFG, $OUTPUT;
 
         $this->check_context();
 
@@ -379,7 +374,7 @@ class block_shop_course_seats_renderer extends plugin_renderer_base {
     }
 
     public function new_participant_row() {
-        global $CFG, $SESSION;
+        global $CFG;
 
         $this->check_context();
 
@@ -479,7 +474,9 @@ class block_shop_course_seats_renderer extends plugin_renderer_base {
 
         $str = '';
 
-        if (empty($SESSION->shopseats)) return;
+        if (empty($SESSION->shopseats)) {
+            return;
+        }
 
         if (!empty($SESSION->shopseats->users[$role])) {
             $rkeys = array_keys($SESSION->shopseats->users[$role]);
@@ -502,7 +499,7 @@ class block_shop_course_seats_renderer extends plugin_renderer_base {
         return $str;
     }
 
-    function role_list($role) {
+    public function role_list($role) {
         global $OUTPUT, $SESSION;
 
         $this->check_context();
@@ -511,7 +508,7 @@ class block_shop_course_seats_renderer extends plugin_renderer_base {
 
         $roleassigns = @$SESSION->shopseats->users;
 
-        $str .= $OUTPUT->heading(get_string(str_replace('_', '', $role), 'local_shop'));  // Remove pseudo roles markers.
+        $str .= $OUTPUT->heading(get_string(str_replace('_', '', $role), 'local_shop')); // Remove pseudo roles markers.
         if (!empty($roleassigns[$shortname][$role])) {
             $str .= '<div class="shop-role-list-container">';
             $str .= '<table width="100%" class="shop-role-list">';
