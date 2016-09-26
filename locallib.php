@@ -25,8 +25,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-function block_shop_course_seats_get_products($context, $userid = 0) {
-    global $USER, $DB, $COURSE;
+function block_shop_course_seats_get_products($userid = 0) {
+    global $DB, $COURSE;
 
     $params = array($COURSE->id);
     $userclause = '';
@@ -87,10 +87,12 @@ function shop_course_seats_check_assigned_seats($requiredroles) {
 
     $assigned = 0;
 
-    if (!isset($SESSION->shopseats)) return 0;
+    if (!isset($SESSION->shopseats)) {
+        return 0;
+    }
 
     if ($requiredroles && !empty($SESSION->shopseats->users)) {
-        foreach ($SESSION->shopseats->users as $product => $roleassigns) {
+        foreach ($SESSION->shopseats->users as $roleassigns) {
             foreach ($roleassigns as $role => $participants) {
                 $assigned += count($participants);
             }

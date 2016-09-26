@@ -33,12 +33,12 @@ use \local_shop\Shop;
 use \local_shop\Product;
 use \local_shop\BillItem;
 
-$id = required_param('id', PARAM_INT); //course id
-$blockid = required_param('blockid', PARAM_INT); //the current blockid
+$id = required_param('id', PARAM_INT); // Course id.
+$blockid = required_param('blockid', PARAM_INT); // The current block id.
 
 $instance = $DB->get_record('block_instances', array('id' => $blockid));
-$theBlock = block_instance('shop_course_seats', $instance);
-$theShop = new Shop($theBlock->config->shopinstance);
+$theblock = block_instance('shop_course_seats', $instance);
+$theshop = new Shop($theblock->config->shopinstance);
 
 $url = new moodle_url('/blocks/shop_course_seats/manage.php', array('id' => $id, 'blockid' => $blockid));
 $PAGE->set_url($url);
@@ -58,7 +58,7 @@ $PAGE->set_title(get_string('pluginname', 'block_shop_course_seats'));
 $PAGE->set_heading(get_string('pluginname', 'block_shop_course_seats'));
 $PAGE->navbar->add(get_string('pluginname', 'block_shop_course_seats'));
 
-$products = block_shop_course_seats_get_products($context, $USER->id);
+$products = block_shop_course_seats_get_products($USER->id);
 $unassigned = 0;
 $assigned = 0;
 foreach ($products as $p) {
@@ -71,7 +71,7 @@ foreach ($products as $p) {
 }
 
 $renderer = $PAGE->get_renderer('block_shop_course_seats');
-$renderer->load_context($theShop, $theblock);
+$renderer->load_context($theshop, $theblock);
 
 $groupopts = array('' => get_string('newgroup', 'block_shop_course_seats'));
 if ($mygroups = groups_get_all_groups($COURSE->id, $USER->id)) {
@@ -100,7 +100,7 @@ if ($data = $userform->get_data()) {
             $group->descriptionformat = 0;
             $group->id = $DB->insert_record('groups', $group);
 
-            // Invalidate the grouping cache for the course
+            // Invalidate the grouping cache for the course.
             cache_helper::invalidate_by_definition('core', 'groupdata', array(), array($course->id));
 
             // Trigger group event.
@@ -122,7 +122,7 @@ if ($data = $userform->get_data()) {
     // We are confirming assigning new users.
     foreach ($SESSION->shopseats->participants as $p) {
 
-        // Get an unassigned instance to use it
+        // Get an unassigned instance to use it.
         if (!$prodrec = array_shift($unassignedinstances)) {
             $ret .= get_string('notenoughseats', 'block_shop_course_seats');
             break;
@@ -136,9 +136,9 @@ if ($data = $userform->get_data()) {
             $supervisorrole = $DB->get_record('role', array('shortname' => $productinfo->supervisor));
         }
 
-        // Check we must create one or already registered
+        // Check we must create one or already registered.
         if (!$potential = $DB->get_record('user', array('email' => $p->email))) {
-            // Create a new account and bind it to the customer
+            // Create a new account and bind it to the customer.
 
             $potential = shop_create_moodle_user($p, $billitem, $supervisorrole);
         }
@@ -202,7 +202,7 @@ if (!empty($SESSION->shopseats->participants)) {
         $i++;
     }
 }
-for ( ; $i < $unassigned ; $i++) {
+for (; $i < $unassigned; $i++) {
     echo $renderer->participant_blankrow();
 }
 echo '</table>';
