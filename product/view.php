@@ -54,12 +54,12 @@ if (!$instance = $DB->get_record('block_instances', array('id' => $id))) {
     print_error('badblockinstance', 'block_shop_course_seats');
 }
 
-$theBlock = block_instance('shop_course_seats', $instance);
+$theblock = block_instance('shop_course_seats', $instance);
 
-//TODO : Check customer identity against current user.
+// TODO : Check customer identity against current user.
 
 // Get and check course from block context.
-if (!$course = $DB->get_record('course', array('id' => $theBlock->context->instanceid))) {
+if (!$course = $DB->get_record('course', array('id' => $theblock->context->instanceid))) {
     print_error('coursemisconf');
 }
 
@@ -110,7 +110,7 @@ if ($product->enddate) {
 } else {
     echo '<div>';
     echo '<div class="cs-product-key">'.get_string('enddate', 'block_shop_course_seats').'</div>';
-    echo '<div class="cs-product-value">'.get_string('unlimited','block_shop_course_seats').'</div>';
+    echo '<div class="cs-product-value">'.get_string('unlimited', 'block_shop_course_seats').'</div>';
     echo '</div>';
 }
 echo $OUTPUT->box_end();
