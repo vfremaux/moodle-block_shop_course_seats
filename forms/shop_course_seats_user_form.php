@@ -22,11 +22,13 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+defined('MOODLE_INTERNAL') || die();
+
 require_once($CFG->dirroot.'/lib/formslib.php');
 
 class ShopCourseSeatsUser_Form extends moodleform {
 
-    function definition() {
+    public function definition() {
         $mform = $this->_form;
 
         $mform->addElement('hidden', 'id');

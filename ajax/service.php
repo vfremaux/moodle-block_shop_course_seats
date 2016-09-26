@@ -33,15 +33,15 @@ use local_shop\Shop;
 $PAGE->set_url(new moodle_url('/blocks/shop_course_seats/ajax/service.php'));
 
 $shopid = required_param('id', PARAM_INT);
-$theShop = new Shop($shopid);
-$theCatalog = new Catalog($theShop->catalogid);
+$theshop = new Shop($shopid);
+$thecatelog = new Catalog($theshop->catalogid);
 $blockid = required_param('blockid', PARAM_INT);
 
 $instance = $DB->get_record('block_instances', array('id' => $blockid));
 $theblock = block_instance('shop_course_seats', $instance);
 $context = context::instance_by_id($instance->parentcontextid);
 
-$products = block_shop_course_seats_get_products($context, $USER->id);
+$products = block_shop_course_seats_get_products($USER->id);
 $unassigned = 0;
 $assigned = 0;
 
@@ -63,7 +63,7 @@ $PAGE->set_pagelayout('embedded');
 $PAGE->set_context($context);
 
 $renderer = $PAGE->get_renderer('block_shop_course_seats');
-$renderer->load_context($theShop, $theblock);
+$renderer->load_context($theshop, $theblock);
 
 $output = '';
 
@@ -95,7 +95,7 @@ if ($action == 'addparticipant') {
 
 if ($action == 'deleteparticipant') {
     $ptid = required_param('participantid', PARAM_TEXT);
-    $requiredroles = $theCatalog->check_required_roles();
+    $requiredroles = $thecatelog->check_required_roles();
 
     if (isset($SESSION->shopseats->participants[$ptid])) {
         unset($SESSION->shopseats->participants[$ptid]);
@@ -125,7 +125,7 @@ if ($action == 'participantlist') {
             $i++;
         }
     }
-    for ( ; $i < $unassigned ; $i++) {
+    for (; $i < $unassigned; $i++) {
         $output .= $renderer->participant_blankrow();
     }
 }
@@ -134,7 +134,7 @@ if ($action == 'addassign') {
     $ptid = required_param('participantid', PARAM_TEXT);
     $role = required_param('role', PARAM_TEXT);
     $shortname = required_param('product', PARAM_TEXT);
-    
+
     if (!isset($SESSION->shopseats->users)) {
         $SESSION->shopseats->users = array();
     }
@@ -159,7 +159,7 @@ if ($action == 'assignlist') {
 }
 
 if ($action == 'assignlistobj') {
-    $requiredroles = $theCatalog->check_required_roles();
+    $requiredroles = $thecatelog->check_required_roles();
 
     $a = new StdClass;
     $a->role = required_param('role', PARAM_TEXT);
@@ -171,7 +171,7 @@ if ($action == 'assignlistobj') {
 }
 
 if ($action == 'assignalllistobj') {
-    $requiredroles = $theCatalog->check_required_roles();
+    $requiredroles = $thecatelog->check_required_roles();
 
     $a = new StdClass;
     foreach ($requiredroles as $role) {

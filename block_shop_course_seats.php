@@ -23,8 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
  * This bloc provides a local way to manage the customer's owned seats from within
- * the course, without any need ofother screens or services. 
- * The owner 
+ * the course, without any need of other screens or services.
  */
 
 defined('MOODLE_INTERNAL') || die();
@@ -80,12 +79,12 @@ class block_shop_course_seats extends block_base {
             $this->config->shopinstance = 1;
         }
 
-        $theshop = new Shop($this->config->shopinstance, $light = true);
+        $theshop = new Shop($this->config->shopinstance, true);
         $renderer->load_context($theshop, $this);
 
         // Fetch products that are seats assigned to this course, or notassigned.
         // Non assigned products will be filtered for course later.
-        $products = block_shop_course_seats_get_products($coursecontext, $USER->id);
+        $products = block_shop_course_seats_get_products($USER->id);
         if ($products) {
             $wide = false;
 
@@ -167,7 +166,6 @@ class block_shop_course_seats extends block_base {
                 $ue = $DB->get_record('user_enrolments', array('id' => $product->instanceid));
                 $user = $DB->get_record('user', array('id' => $ue->userid));
                 $courseid = $DB->get_field('enrol', 'courseid', array('id' => $ue->enrolid));
-                $course = $DB->get_record('course', array('id' => $courseid), 'id,shortname,fullname');
                 $str .= $OUTPUT->box_start();
                 $str .= get_string('assignedto', 'block_shop_course_seats', fullname($user));
                 $str .= $OUTPUT->box_end();
