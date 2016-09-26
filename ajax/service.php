@@ -1,15 +1,18 @@
 <?php
 // This file is part of Moodle - http://moodle.org/
-// // Moodle is free software: you can redistribute it and/or modify
+//
+// Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// // Moodle is distributed in the hope that it will be useful,
+//
+// Moodle is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// // You should have received a copy of the GNU General Public License
-// along with Moodle. If not, see <http://www.gnu.org/licenses/>.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
  * @package   local_shop
@@ -35,12 +38,13 @@ $theCatalog = new Catalog($theShop->catalogid);
 $blockid = required_param('blockid', PARAM_INT);
 
 $instance = $DB->get_record('block_instances', array('id' => $blockid));
-$theBlock = block_instance('shop_course_seats', $instance);
+$theblock = block_instance('shop_course_seats', $instance);
 $context = context::instance_by_id($instance->parentcontextid);
 
 $products = block_shop_course_seats_get_products($context, $USER->id);
 $unassigned = 0;
 $assigned = 0;
+
 foreach ($products as $p) {
     if (!$p->instanceid) {
         $unassigned++;
@@ -59,7 +63,7 @@ $PAGE->set_pagelayout('embedded');
 $PAGE->set_context($context);
 
 $renderer = $PAGE->get_renderer('block_shop_course_seats');
-$renderer->load_context($theShop, $theBlock);
+$renderer->load_context($theShop, $theblock);
 
 $output = '';
 
@@ -89,7 +93,6 @@ if ($action == 'addparticipant') {
     $action = 'participantlist';
 }
 
-// -----------------------------------------------------------------------------------//
 if ($action == 'deleteparticipant') {
     $ptid = required_param('participantid', PARAM_TEXT);
     $requiredroles = $theCatalog->check_required_roles();
@@ -109,7 +112,7 @@ if ($action == 'deleteparticipant') {
 
     $action = 'participantlist';
 }
-// -----------------------------------------------------------------------------------//
+
 if ($action == 'participantlist') {
     if (!empty($result)) {
         $output .= $OUTPUT->box($result);
@@ -127,7 +130,6 @@ if ($action == 'participantlist') {
     }
 }
 
-// -----------------------------------------------------------------------------------//
 if ($action == 'addassign') {
     $ptid = required_param('participantid', PARAM_TEXT);
     $role = required_param('role', PARAM_TEXT);
@@ -140,22 +142,22 @@ if ($action == 'addassign') {
     @$SESSION->shopseats->assigns[$shortname]++;
     $action = 'assignlistobj';
 }
-// -----------------------------------------------------------------------------------//
+
 if ($action == 'deleteassign') {
     $ptid = required_param('participantid', PARAM_TEXT);
     $role = required_param('role', PARAM_TEXT);
 
     unset($SESSION->shopseats->users[$role][$ptid]);
     @$SESSION->shopseats->assigns--;
-    $SESSION->shopseats->assigns = max(0, @$SESSION->shopseats->assigns); // secures in case of failure...
+    $SESSION->shopseats->assigns = max(0, @$SESSION->shopseats->assigns); // Secures in case of failure...
     $action = 'assignlistobj';
 }
-// -----------------------------------------------------------------------------------//
+
 if ($action == 'assignlist') {
     $role = required_param('role', PARAM_TEXT);
     $renderer->role_list($role);
 }
-// -----------------------------------------------------------------------------------//
+
 if ($action == 'assignlistobj') {
     $requiredroles = $theCatalog->check_required_roles();
 
@@ -168,7 +170,6 @@ if ($action == 'assignlistobj') {
     $output = json_encode($a);
 }
 
-// -----------------------------------------------------------------------------------//
 if ($action == 'assignalllistobj') {
     $requiredroles = $theCatalog->check_required_roles();
 
@@ -180,5 +181,4 @@ if ($action == 'assignalllistobj') {
     $output = json_encode($a);
 }
 
-debug_trace(print_r($SESSION, true));
 echo $output;
