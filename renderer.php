@@ -244,7 +244,7 @@ class block_shop_course_seats_renderer extends plugin_renderer_base {
     public function participant_row($participant = null) {
         global $CFG, $OUTPUT, $SITE, $PAGE;
 
-        static $isuserstr
+        static $isuserstr;
         static $isnotuser;
 
         if (!isset($isuserstr)) {

@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
  * This bloc provides a local way to manage the customer's owned seats from within
- * the course, without any need ofother screens or services.
+ * the course, without any need of other screens or services.
  */
 
 defined('MOODLE_INTERNAL') || die();
