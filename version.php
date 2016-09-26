@@ -20,7 +20,7 @@
  * @package     block_shop_course_seats
  * @category    blocks
  * @author      Valery Fremaux <valery.fremaux@gmail.com>
- * @copyright   2016 Valery Fremaux (http://www.mylearningfactory.com)
+ * @copyright   2016 onwards Valery Fremaux (http://www.mylearningfactory.com)
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -29,8 +29,8 @@ defined('MOODLE_INTERNAL') || die();
 $plugin->version   = 2016082700;        // The current plugin version (Date: YYYYMMDDXX).
 $plugin->requires  = 2015111000;        // Requires this Moodle version.
 $plugin->component = 'block_shop_course_seats'; // Full name of the plugin (used for diagnostics).
-$plugin->maturity = MATURITY_BETA;
+$plugin->maturity = MATURITY_RC;
 $plugin->release = '3.0.0 (Build 2013050300)';
 
-// Non Moodle attributes.
+// Non moodle attributes.
 $plugin->codeincrement = '3.0.0000';

@@ -14,10 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
- * Capability definitions for the inwicast module.
+ * Main block implementation.
  *
  * @package    block_shop_course_seats
  * @category   blocks
@@ -28,6 +26,9 @@ defined('MOODLE_INTERNAL') || die();
  * the course, without any need ofother screens or services. 
  * The owner 
  */
+
+defined('MOODLE_INTERNAL') || die();
+
 require_once($CFG->dirroot.'/blocks/shop_course_seats/locallib.php');
 require_once($CFG->dirroot.'/local/shop/classes/Shop.class.php');
 
@@ -35,24 +36,24 @@ use \local_shop\Shop;
 
 class block_shop_course_seats extends block_base {
 
-    function init() {
+    public function init() {
         $this->title = get_string('blockname', 'block_shop_course_seats');
     }
 
-    function applicable_formats() {
+    public function applicable_formats() {
         return array('all' => false, 'my' => false, 'course' => true);
     }
 
-    function specialization() {
+    public function specialization() {
         return false;
     }
 
-    function instance_allow_multiple() {
+    public function instance_allow_multiple() {
         return true;
     }
 
-    function get_content() {
-        global $USER, $CFG, $DB, $COURSE, $PAGE;
+    public function get_content() {
+        global $USER, $DB, $COURSE, $PAGE;
 
         if ($this->content !== null) {
             return $this->content;
@@ -79,8 +80,8 @@ class block_shop_course_seats extends block_base {
             $this->config->shopinstance = 1;
         }
 
-        $theShop = new Shop($this->config->shopinstance, $light = true);
-        $renderer->load_context($theShop, $this);
+        $theshop = new Shop($this->config->shopinstance, $light = true);
+        $renderer->load_context($theshop, $this);
 
         // Fetch products that are seats assigned to this course, or notassigned.
         // Non assigned products will be filtered for course later.
@@ -88,11 +89,11 @@ class block_shop_course_seats extends block_base {
         if ($products) {
             $wide = false;
 
-            // check we are not in central position of a page format
+            // Check we are not in central position of a page format.
             if ($COURSE->format == 'page') {
                 $blockposition = $DB->get_record('block_positions', array('blockinstanceid' => $this->instance->id));
                 if (!$blockposition) {
-                    if ($this->defaultregion == 'main') {
+                    if (@$this->defaultregion == 'main') {
                         $wide = true;
                     }
                 } else {
@@ -108,8 +109,8 @@ class block_shop_course_seats extends block_base {
             foreach ($products as $pid => $p) {
                 $params = $this->_decode_url_parms($p->productiondata);
                 $expectedcourses = false;
-                if (!empty($params['enabledcourses'])) {
-                    $expectedcourses = explode(',', $params['enabledcourses']);
+                if (!empty($params['allowedcourses'])) {
+                    $expectedcourses = explode(',', $params['allowedcourses']);
                 }
 
                 if (!empty($expectedcourses) && !in_array($COURSE->id, $expectedcourses)) {
@@ -121,6 +122,11 @@ class block_shop_course_seats extends block_base {
                 }
             }
 
+            if (empty($products)) {
+                $this->content->text = get_string('noseatsforthiscourse', 'block_shop_course_seats');
+                return $this->content;
+            }
+
             if ($wide) {
                 $this->content->text = $renderer->product_table_wide($products);
             } else {
@@ -128,7 +134,8 @@ class block_shop_course_seats extends block_base {
             }
 
             if ($hasassignable) {
-                $manageurl = new moodle_url('/blocks/shop_course_seats/manage.php', array('id' => $COURSE->id, 'blockid' => $this->instance->id));
+                $params = array('id' => $COURSE->id, 'blockid' => $this->instance->id);
+                $manageurl = new moodle_url('/blocks/shop_course_seats/manage.php', $params);
                 $managestr = get_string('manageseats', 'block_shop_course_seats');
                 $this->content->footer = '<a href="'.$manageurl.'">'.$managestr.'</a>';
             }
@@ -137,22 +144,22 @@ class block_shop_course_seats extends block_base {
             $this->content->text = get_string('noseats', 'block_shop_course_seats');
         }
 
-        unset($filteropt); // memory footprint
-
         return $this->content;
     }
 
-    /*
-     * Hide the title bar when none set..
+    /**
+     * Hide the title bar when none set.
      */
-    function hide_header() {
-        return empty($this->config->title);
+    public function hide_header() {
+        return false;
     }
 
-    function get_context_product_info($product) {
+    public function get_context_product_info($product) {
         global $DB, $OUTPUT;
 
-        if (empty($product->instanceid)) return '';
+        if (empty($product->instanceid)) {
+            return '';
+        }
 
         $str = '';
         switch ($product->contexttype) {
@@ -178,7 +185,7 @@ class block_shop_course_seats extends block_base {
         return $params;
     }
 
-    function get_required_javascript() {
+    public function get_required_javascript() {
         global $PAGE;
 
         $PAGE->requires->js('/blocks/shop_course_seats/js/js.js');

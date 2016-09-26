@@ -14,8 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Capability definitions for the inwicast module.
  *
@@ -24,6 +22,8 @@ defined('MOODLE_INTERNAL') || die();
  * @copyright  2013 Valery Fremaux (valery.fremaux@gmail.com)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
+defined('MOODLE_INTERNAL') || die();
 
 function block_shop_course_seats_get_products($context, $userid = 0) {
     global $USER, $DB, $COURSE;
