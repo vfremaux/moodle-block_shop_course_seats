@@ -44,6 +44,7 @@ $PAGE->set_context($context);
 // Calculates and updates the seat count.
 $requiredroles = array('student', '_supervisor');
 $assigned = shop_course_seats_check_assigned_seats($requiredroles);
+$unassignedstr = get_string('notallassigned', 'local_shop');
 ?>
 
 // this early loads from server
@@ -62,15 +63,19 @@ function ajax_add_user(wwwroot, formobj) {
     pt.firstname = formobj.firstname.value;
     pt.email = formobj.email.value;
     pt.city = formobj.city.value;
-    <?php if (!empty($theshop->enduserorganisationrequired)) { ?>
+<?php
+if (!empty($theshop->enduserorganisationrequired)) {
+?>
         pt.institution = formobj.institution.value;
-    <?php } 
-    if (!empty($theshop->endusermobilephonerequired)) { ?>
+<?php
+}
+if (!empty($theshop->endusermobilephonerequired)) {
+?>
         pt.phone2 = formobj.phone2.value;
-    <?php } ?>
-    
+<?php } ?>
+
     $('#participantlist').html(ajax_waiter);
-    
+
     $.post(
         urlbase, 
         {
@@ -89,7 +94,7 @@ function ajax_add_user(wwwroot, formobj) {
             // formobj.city.value = '';
 <?php if (!empty($theshop->enduserorganisationrequired)) { ?>
             // formobj.institution.value = '';
-<?php 
+<?php
 }
 if (!empty($theshop->endusermobilephonerequired)) {
 ?>
@@ -203,7 +208,7 @@ function ajax_add_assign(wwwroot, assignrole, selectobj) {
                 $('#next-button').css('opacity', '0.5');
                 $('#next-button').removeClass('shop-active-button');
                 $('#next-button').attr('disabled', 'disabled');
-                $('#next-button').attr('title', '<?php echo str_replace("'", '\\\'', get_string('notallassigned', 'local_shop')) ?>');
+                $('#next-button').attr('title', '<?php echo str_replace("'", '\\\'', $unassignedstr) ?>');
             } else {
                 $('#next-button').css('opacity', '1.0');
                 $('#next-button').addClass('shop-active-button');
@@ -216,7 +221,8 @@ function ajax_add_assign(wwwroot, assignrole, selectobj) {
 
 function ajax_delete_assign(wwwroot, assignrole, email) {
     urlbase = wwwroot+'/blocks/shop_course_seats/ajax/service.php';
-    ajax_waiter = '<div class="ajax-waiter"><center><img src="'+wwwroot+'/local/shop/pix/loading29.gif" /><center></div>';
+    ajax_waiter = '<div class="ajax-waiter"><center>'+
+        '<img src="'+wwwroot+'/local/shop/pix/loading29.gif" /><center></div>';
 
     requiredroles = JSON.parse('<?php echo json_encode($requiredroles); ?>');
 
@@ -224,9 +230,9 @@ function ajax_delete_assign(wwwroot, assignrole, email) {
         role = requiredroles[rix];
         $('#'+role+'list').html(ajax_waiter);
     }
-        
+
     $.post(
-        urlbase, 
+        urlbase,
         {
             id: '<?php echo $theshop->id ?>',
             blockid: '<?php echo $blockid ?>',
@@ -246,7 +252,7 @@ function ajax_delete_assign(wwwroot, assignrole, email) {
                 $('#next-button').css('opacity', '0.5');
                 $('#next-button').removeClass('shop-active-button');
                 $('#next-button').attr('disabled', 'disabled');
-                $('#next-button').attr('title', '<?php echo str_replace("'", '\\\'', get_string('notallassigned', 'local_shop')) ?>');
+                $('#next-button').attr('title', '<?php echo str_replace("'", '\\\'', $unassignedstr) ?>');
             } else {
                 $('#next-button').css('opacity', '1.0');
                 $('#next-button').addClass('shop-active-button');

@@ -38,7 +38,7 @@ class block_shop_course_seats_edit_form extends block_edit_form {
         $mform->setType('config_title', PARAM_MULTILANG);
 
         $shops = $DB->get_records('local_shop');
-        if ($shops){
+        if ($shops) {
             foreach ($shops as $sh) {
                 $opts[$sh->id] = $sh->name;
             }
