@@ -1,3 +1,4 @@
+
 function toggle_course_seats() {
     if ($('#cs-course-seats').css('display') == 'block') {
         $('#cs-course-seats').css('display', 'none');
