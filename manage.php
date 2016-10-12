@@ -28,6 +28,7 @@ require_once($CFG->dirroot.'/local/shop/classes/Shop.class.php');
 require_once($CFG->dirroot.'/local/shop/classes/Product.class.php');
 require_once($CFG->dirroot.'/local/shop/classes/BillItem.class.php');
 require_once($CFG->dirroot.'/blocks/shop_course_seats/forms/shop_course_seats_user_form.php');
+require_once($CFG->dirroot.'/group/lib.php');
 
 use \local_shop\Shop;
 use \local_shop\Product;
@@ -98,19 +99,7 @@ if ($data = $userform->get_data()) {
             $group->idnumber = '';
             $group->description = '';
             $group->descriptionformat = 0;
-            $group->id = $DB->insert_record('groups', $group);
-
-            // Invalidate the grouping cache for the course.
-            cache_helper::invalidate_by_definition('core', 'groupdata', array(), array($course->id));
-
-            // Trigger group event.
-            $params = array(
-                'context' => $context,
-                'objectid' => $group->id
-            );
-            $event = \core\event\group_created::create($params);
-            $event->add_record_snapshot('groups', $group);
-            $event->trigger();
+            $group->id = groups_create_group($group);
 
             // Add me to group.
             groups_add_member($group, $USER);
