@@ -1,3 +1,7 @@
+/*
+*
+*/
+// jshint undef:true, unused:true
 
 function toggle_course_seats() {
     if ($('#cs-course-seats').css('display') == 'block') {
