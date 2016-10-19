@@ -51,8 +51,12 @@ class block_shop_course_seats_renderer extends plugin_renderer_base {
     public function load_context(&$theshop, &$theblock = null) {
 
         $this->theshop = $theshop;
-        $this->thecatalog = new Catalog($this->theshop->catalogid);
         $this->theblock = $theblock;
+        if ($this->theshop->catalogid) {
+            $this->thecatalog = new Catalog($this->theshop->catalogid);
+        } else {
+            return;
+        }
 
         if (!empty($this->theblock->instance->id)) {
             $this->context = context_block::instance($this->theblock->instance->id);
