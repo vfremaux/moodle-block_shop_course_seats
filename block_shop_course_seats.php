@@ -52,7 +52,7 @@ class block_shop_course_seats extends block_base {
     }
 
     public function get_content() {
-        global $USER, $DB, $COURSE, $PAGE;
+        global $USER, $DB, $COURSE, $PAGE, $OUTPUT;
 
         if ($this->content !== null) {
             return $this->content;
@@ -80,6 +80,10 @@ class block_shop_course_seats extends block_base {
         }
 
         $theshop = new Shop($this->config->shopinstance, true);
+        if (!$theshop->catalogid || !$DB->record_exists('local_shop_catalog', array('id' => $theshop->catalogid))) {
+            $this->content->text = $OUTPUT->notification(get_string('errorconfig', 'block_shop_course_seats'), 'notifyfailure');
+            return $this->content;
+        }
         $renderer->load_context($theshop, $this);
 
         // Fetch products that are seats assigned to this course, or notassigned.
