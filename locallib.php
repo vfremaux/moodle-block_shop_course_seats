@@ -14,8 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Capability definitions for the inwicast module.
  *
@@ -25,8 +23,10 @@ defined('MOODLE_INTERNAL') || die();
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-function block_shop_course_seats_get_products($context, $userid = 0) {
-    global $USER, $DB, $COURSE;
+defined('MOODLE_INTERNAL') || die();
+
+function block_shop_course_seats_get_products($userid = 0) {
+    global $DB, $COURSE;
 
     $params = array($COURSE->id);
     $userclause = '';
@@ -87,10 +87,12 @@ function shop_course_seats_check_assigned_seats($requiredroles) {
 
     $assigned = 0;
 
-    if (!isset($SESSION->shopseats)) return 0;
+    if (!isset($SESSION->shopseats)) {
+        return 0;
+    }
 
     if ($requiredroles && !empty($SESSION->shopseats->users)) {
-        foreach ($SESSION->shopseats->users as $product => $roleassigns) {
+        foreach ($SESSION->shopseats->users as $roleassigns) {
             foreach ($roleassigns as $role => $participants) {
                 $assigned += count($participants);
             }

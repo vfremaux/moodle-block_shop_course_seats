@@ -24,18 +24,30 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-/**
- * Standard post install handler.
- *
- * Adds capability to the shop sales role.
- */
-function xmldb_block_shop_course_seats_install() {
-    global $DB;
+require_once($CFG->dirroot.'/lib/formslib.php');
 
-    if ($role = $DB->get_record('role', array('shortname' => 'sales'))) {
-        $systemcontext = context_system::instance();
-        role_change_permission($role->id, $systemcontext, 'block/shop_course_seats:manage', CAP_ALLOW);
+class ShopCourseSeatsUser_Form extends moodleform {
+
+    public function definition() {
+        $mform = $this->_form;
+
+        $mform->addElement('hidden', 'id');
+        $mform->setType('id', PARAM_INT);
+
+        $mform->addElement('hidden', 'blockid');
+        $mform->setType('blockid', PARAM_INT);
+
+        $mform->addElement('header', 'h0', get_string('group'), '');
+        if (!empty($this->_customdata['groups'])) {
+            $mform->addElement('select', 'group', get_string('group'), $this->_customdata['groups']);
+        }
+
+        $mform->addElement('text', 'newgroup', get_string('newgroup', 'block_shop_course_seats'));
+        $mform->disabledIf('newgroup', 'group', 'neq', '');
+        $mform->addRule('newgroup', null, 'required', null, 'client');
+        $mform->setType('newgroup', PARAM_TEXT);
+
+        $this->add_action_buttons(get_string('assignseats', 'block_shop_course_seats'));
+
     }
-
-    return true;
 }

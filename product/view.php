@@ -35,8 +35,8 @@ use local_shop\Product;
 use local_shop\BillItem;
 
 $productid = required_param('pid', PARAM_INT);
-$id = required_param('id', PARAM_INT); // the block id
-$shopid = required_param('shopid', PARAM_INT); // the shop id
+$id = required_param('id', PARAM_INT); // The block id.
+$shopid = required_param('shopid', PARAM_INT); // The shop id.
 
 try {
     $product = new Product($productid);
@@ -54,12 +54,12 @@ if (!$instance = $DB->get_record('block_instances', array('id' => $id))) {
     print_error('badblockinstance', 'block_shop_course_seats');
 }
 
-$theBlock = block_instance('shop_course_seats', $instance);
+$theblock = block_instance('shop_course_seats', $instance);
 
-//TODO : Check customer identity against current user
+// TODO : Check customer identity against current user.
 
-// Get and check course from block context
-if (!$course = $DB->get_record('course', array('id' => $theBlock->context->instanceid))) {
+// Get and check course from block context.
+if (!$course = $DB->get_record('course', array('id' => $theblock->context->instanceid))) {
     print_error('coursemisconf');
 }
 
@@ -91,12 +91,27 @@ echo '</p>';
 
 echo $OUTPUT->heading(get_string('product', 'block_shop_course_seats'), 3);
 echo $OUTPUT->box_start('block-shop-product-ref-box block');
-echo '<div><div class="cs-product-key">'.get_string('reference', 'block_shop_course_seats').'</div><div class="cs-product-value monospace">'.$product->reference.'</div></div>';
-echo '<div><div class="cs-product-key">'.get_string('startdate', 'block_shop_course_seats').'</div><div class="cs-product-value">'.userdate($product->startdate).'</div></div>';
+
+echo '<div>';
+echo '<div class="cs-product-key">'.get_string('reference', 'block_shop_course_seats').'</div>';
+echo '<div class="cs-product-value monospace">'.$product->reference.'</div>';
+echo '</div>';
+
+echo '<div>';
+echo '<div class="cs-product-key">'.get_string('startdate', 'block_shop_course_seats').'</div>';
+echo '<div class="cs-product-value">'.userdate($product->startdate).'</div>';
+echo '</div>';
+
 if ($product->enddate) {
-    echo '<div><div class="cs-product-key">'.get_string('enddate', 'block_shop_course_seats').'</div><div class="cs-product-value">'.userdate($product->enddate).'</div></div>';
+    echo '<div>';
+    echo '<div class="cs-product-key">'.get_string('enddate', 'block_shop_course_seats').'</div>';
+    echo '<div class="cs-product-value">'.userdate($product->enddate).'</div>';
+    echo '</div>';
 } else {
-    echo '<div><div class="cs-product-key">'.get_string('enddate', 'block_shop_course_seats').'</div><div class="cs-product-value">'.get_string('unlimited','block_shop_course_seats').'</div></div>';
+    echo '<div>';
+    echo '<div class="cs-product-key">'.get_string('enddate', 'block_shop_course_seats').'</div>';
+    echo '<div class="cs-product-value">'.get_string('unlimited', 'block_shop_course_seats').'</div>';
+    echo '</div>';
 }
 echo $OUTPUT->box_end();
 
@@ -109,20 +124,26 @@ echo $OUTPUT->heading(get_string('purchase', 'block_shop_course_seats'), 3);
 $productevents = $DB->get_records('local_shop_productevent', array('productid' => $product->id));
 echo $OUTPUT->box_start('cs-product-billinfo-box block');
 
-// print_object($product);
-
 $billitem = new BillItem($product->initialbillitemid);
 
 if ($productevents) {
     foreach ($productevents as $pe) {
         $bi = new BillItem($pe->billitemid);
-        echo '<p><div class="cs-product-bill">'.$bi->bill->title.'</div><div class="cs-product-date">'.userdate($bi->bill->emissiondate).'</div></p>';
+        echo '<p><div class="cs-product-bill">'.$bi->bill->title.'</div>';
+        echo '<div class="cs-product-date">'.userdate($bi->bill->emissiondate).'</div></p>';
+
         echo '<p><div class="cs-product-billitem">['.$bi->catalogitem->code.']</div> ';
         echo '<div class="cs-product-billitem">'.$bi->catalogitem->name.'</div></p>';
-        echo '<div><div class="cs-product-key">'.get_string('quantity', 'local_shop').'</div>';
-        echo '<div class="cs-product-value">'.$bi->quantity.'</div></div>';
-        echo '<div><div class="cs-product-key">'.get_string('unitprice', 'local_shop').'</div>';
-        echo '<div class="cs-product-value">'.sprintf('%0.2f', $bi->unitcost).' '.$bi->bill->currency.'</div></div>';
+
+        echo '<div>';
+        echo '<div class="cs-product-key">'.get_string('quantity', 'local_shop').'</div>';
+        echo '<div class="cs-product-value">'.$bi->quantity.'</div>';
+        echo '</div>';
+
+        echo '<div>';
+        echo '<div class="cs-product-key">'.get_string('unitprice', 'local_shop').'</div>';
+        echo '<div class="cs-product-value">'.sprintf('%0.2f', $bi->unitcost).' '.$bi->bill->currency.'</div>';
+        echo '</div>';
     }
 }
 echo $OUTPUT->box_end();

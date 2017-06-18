@@ -1,15 +1,18 @@
 <?php
 // This file is part of Moodle - http://moodle.org/
-// // Moodle is free software: you can redistribute it and/or modify
+//
+// Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// // Moodle is distributed in the hope that it will be useful,
+//
+// Moodle is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// // You should have received a copy of the GNU General Public License
-// along with Moodle. If not, see <http://www.gnu.org/licenses/>.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
  * @package   local_shop
@@ -30,17 +33,18 @@ use local_shop\Shop;
 $PAGE->set_url(new moodle_url('/blocks/shop_course_seats/ajax/service.php'));
 
 $shopid = required_param('id', PARAM_INT);
-$theShop = new Shop($shopid);
-$theCatalog = new Catalog($theShop->catalogid);
+$theshop = new Shop($shopid);
+$thecatelog = new Catalog($theshop->catalogid);
 $blockid = required_param('blockid', PARAM_INT);
 
 $instance = $DB->get_record('block_instances', array('id' => $blockid));
-$theBlock = block_instance('shop_course_seats', $instance);
+$theblock = block_instance('shop_course_seats', $instance);
 $context = context::instance_by_id($instance->parentcontextid);
 
-$products = block_shop_course_seats_get_products($context, $USER->id);
+$products = block_shop_course_seats_get_products($USER->id);
 $unassigned = 0;
 $assigned = 0;
+
 foreach ($products as $p) {
     if (!$p->instanceid) {
         $unassigned++;
@@ -59,7 +63,7 @@ $PAGE->set_pagelayout('embedded');
 $PAGE->set_context($context);
 
 $renderer = $PAGE->get_renderer('block_shop_course_seats');
-$renderer->load_context($theShop, $theBlock);
+$renderer->load_context($theshop, $theblock);
 
 $output = '';
 
@@ -89,10 +93,9 @@ if ($action == 'addparticipant') {
     $action = 'participantlist';
 }
 
-// -----------------------------------------------------------------------------------//
 if ($action == 'deleteparticipant') {
     $ptid = required_param('participantid', PARAM_TEXT);
-    $requiredroles = $theCatalog->check_required_roles();
+    $requiredroles = $thecatelog->check_required_roles();
 
     if (isset($SESSION->shopseats->participants[$ptid])) {
         unset($SESSION->shopseats->participants[$ptid]);
@@ -109,7 +112,7 @@ if ($action == 'deleteparticipant') {
 
     $action = 'participantlist';
 }
-// -----------------------------------------------------------------------------------//
+
 if ($action == 'participantlist') {
     if (!empty($result)) {
         $output .= $OUTPUT->box($result);
@@ -122,17 +125,16 @@ if ($action == 'participantlist') {
             $i++;
         }
     }
-    for ( ; $i < $unassigned ; $i++) {
+    for (; $i < $unassigned; $i++) {
         $output .= $renderer->participant_blankrow();
     }
 }
 
-// -----------------------------------------------------------------------------------//
 if ($action == 'addassign') {
     $ptid = required_param('participantid', PARAM_TEXT);
     $role = required_param('role', PARAM_TEXT);
     $shortname = required_param('product', PARAM_TEXT);
-    
+
     if (!isset($SESSION->shopseats->users)) {
         $SESSION->shopseats->users = array();
     }
@@ -140,24 +142,24 @@ if ($action == 'addassign') {
     @$SESSION->shopseats->assigns[$shortname]++;
     $action = 'assignlistobj';
 }
-// -----------------------------------------------------------------------------------//
+
 if ($action == 'deleteassign') {
     $ptid = required_param('participantid', PARAM_TEXT);
     $role = required_param('role', PARAM_TEXT);
 
     unset($SESSION->shopseats->users[$role][$ptid]);
     @$SESSION->shopseats->assigns--;
-    $SESSION->shopseats->assigns = max(0, @$SESSION->shopseats->assigns); // secures in case of failure...
+    $SESSION->shopseats->assigns = max(0, @$SESSION->shopseats->assigns); // Secures in case of failure...
     $action = 'assignlistobj';
 }
-// -----------------------------------------------------------------------------------//
+
 if ($action == 'assignlist') {
     $role = required_param('role', PARAM_TEXT);
     $renderer->role_list($role);
 }
-// -----------------------------------------------------------------------------------//
+
 if ($action == 'assignlistobj') {
-    $requiredroles = $theCatalog->check_required_roles();
+    $requiredroles = $thecatelog->check_required_roles();
 
     $a = new StdClass;
     $a->role = required_param('role', PARAM_TEXT);
@@ -168,9 +170,8 @@ if ($action == 'assignlistobj') {
     $output = json_encode($a);
 }
 
-// -----------------------------------------------------------------------------------//
 if ($action == 'assignalllistobj') {
-    $requiredroles = $theCatalog->check_required_roles();
+    $requiredroles = $thecatelog->check_required_roles();
 
     $a = new StdClass;
     foreach ($requiredroles as $role) {
@@ -180,5 +181,4 @@ if ($action == 'assignalllistobj') {
     $output = json_encode($a);
 }
 
-debug_trace(print_r($SESSION, true));
 echo $output;
