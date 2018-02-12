@@ -22,38 +22,38 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['shop_course_seats:addinstance'] = 'Can add an instance of Course Seats block';
-$string['shop_course_seats:manage'] = 'Can manage seat states';
+$string['shop_course_seats:addinstance'] = 'Add a Course seats block ';
+$string['shop_course_seats:manage'] = 'Manage seat statuses';
 
 
-$string['addinguser'] = 'Adding user {$a->firstname} {$a->lastname}';
+$string['addinguser'] = 'Add a user {$a->firstname} {$a->lastname}';
 $string['assignedto'] = '<b>Assigned to:</b> {$a}';
 $string['assignseats'] = 'Assign available seats';
 $string['available'] = 'Available';
-$string['blockname'] = 'Course Seats';
+$string['blockname'] = 'Course seats';
 $string['configshopinstance'] = 'Reference shop instance';
 $string['configtitle'] = 'Title';
 $string['enddate'] = 'End';
-$string['errorconfig'] = 'Catalog cannot be found. It is possible the shop is not properly configured, or catalog has been deleted.';
+$string['errorconfig'] = 'Catalogue cannot be found. The shop may not be configured properly or the catalogue has been deleted.';
 $string['expired'] = 'Expired';
 $string['expiring'] = 'Expiring';
-$string['incourse'] = '<b>In course:</b> [{$a->shortname}] {$a->fullname}';
+$string['incourse'] = '<b>In the course:</b> [{$a->shortname}] {$a->fullname}';
 $string['leaveblanktohide'] = 'Leave blank to hide';
 $string['manage'] = 'Assign seat';
 $string['manageseats'] = 'Manage seats';
 $string['newgroup'] = '(New group)';
-$string['noseats'] = 'No free seats in your account';
+$string['noseats'] = 'No available seats in your account';
 $string['noseatsforthiscourse'] = 'You have seats but none usable for this course.';
-$string['noshops'] = 'no shops';
+$string['noshops'] = 'No shops';
 $string['notenoughseats'] = 'Not enough seats to complete';
 $string['pid'] = 'PID';
-$string['pluginname'] = 'Course Seats';
+$string['pluginname'] = 'Course seats';
 $string['product'] = 'Product';
-$string['productinstance'] = 'Product : {$a}';
-$string['production'] = 'Product Specialisation';
+$string['productinstance'] = 'Product: {$a}';
+$string['production'] = 'Product specifics';
 $string['purchase'] = 'Purchase info';
-$string['reference'] = 'Product Reference';
-$string['running'] = 'Running';
+$string['reference'] = 'Product reference';
+$string['running'] = 'Under way';
 $string['startdate'] = 'Start';
 $string['status'] = 'Status';
 $string['unlimited'] = 'Unlimited';
