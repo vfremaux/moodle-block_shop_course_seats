@@ -30,7 +30,7 @@ $plugin->version   = 2016082700;        // The current plugin version (Date: YYY
 $plugin->requires  = 2017110800;        // Requires this Moodle version.
 $plugin->component = 'block_shop_course_seats'; // Full name of the plugin (used for diagnostics).
 $plugin->maturity = MATURITY_RC;
-$plugin->release = '3.4.0 (Build 2013050300)';
+$plugin->release = '3.5.0 (Build 2013050300)';
 
 // Non moodle attributes.
-$plugin->codeincrement = '3.4.0000';
+$plugin->codeincrement = '3.5.0000';
