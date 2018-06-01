@@ -80,6 +80,11 @@ if ($action == 'addparticipant') {
             $SESSION->shopseats->participants = array();
         }
 
+        /*
+         * We need making a loose matching here because there might be errors in the incoming forms.
+         * We need anyway keep a matching heuristic sufficiant to match internal moodle users. Lastname
+         * and email seems being sufficiant criteria to match a reliable user identity.
+         */
         if ($moodleuser = $DB->get_record('user', array('lastname' => $pt->lastname, 'email' => $pt->email))) {
             $pt->moodleid = $moodleuser->id;
         }
