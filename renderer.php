@@ -99,7 +99,7 @@ class block_shop_course_seats_renderer extends plugin_renderer_base {
         $producttable->align = array('left', 'left', 'left', 'left', 'right');
 
         foreach ($seats as $p) {
-            $pstart = ($p->startdate) ? date('Y/m/d h:i', $p->startdate) : 'N.C.';
+            $pstart = ($p->startdate) ? date(get_string('strftime'), $p->startdate) : 'N.C.';
             $pstr = '['.$p->code.'] '.$p->name;
             $params = array('id' => $COURSE->id,
                             'shopid' => $this->theblock->config->shopinstance,
@@ -110,7 +110,7 @@ class block_shop_course_seats_renderer extends plugin_renderer_base {
             $productext = $this->theblock->get_context_product_info($p);
             $productline = '<span class="cs-course-seat-code">['.$p->reference.']</span>'.$productext;
             if ($p->renewable) {
-                $pend = ($p->enddate) ? date('Y/m/d H:i', $p->enddate) : 'N.C.';
+                $pend = ($p->enddate) ? date(get_string('strftime'), $p->enddate) : 'N.C.';
                 if (time() > $p->enddate) {
                     // Expired.
                     $status = '<span class="cs-course-seat-expired">'.get_string('expired', 'block_shop_course_seats').'</span>';
@@ -142,7 +142,7 @@ class block_shop_course_seats_renderer extends plugin_renderer_base {
         $globalcounts = '<div id="cs-course-seat-shorts">';
         $globalcounts .= '<div id="cs-course-seat-toggler">';
         $globalcounts .= '<a href="javascript:toggle_course_seats()">';
-        $globalcounts .= '<img id="cs-course-seat-toggleimg" src="'.$OUTPUT->pix_url('t/switch_plus').'">';
+        $globalcounts .= '<img id="cs-course-seat-toggleimg" src="'.$OUTPUT->image_url('t/switch_plus').'">';
         $globalcounts .= '</a></div>';
 
         $globalcounts .= '<div id="cs-course-seat-globalcounts">';
@@ -222,7 +222,7 @@ class block_shop_course_seats_renderer extends plugin_renderer_base {
         $globalcounts = '<div id="cs-course-seat-shorts">';
         $globalcounts .= '<div id="cs-course-seat-toggler">';
         $globalcounts .= '<a href="javascript:toggle_course_seats()">';
-        $globalcounts .= '<img id="cs-course-seat-toggleimg" src="'.$OUTPUT->pix_url('t/switch_plus').'"></a></div>';
+        $globalcounts .= '<img id="cs-course-seat-toggleimg" src="'.$OUTPUT->image_url('t/switch_plus').'"></a></div>';
         $globalcounts .= '<div id="cs-course-seat-globalcounts">';
         $globalcounts .= get_string('available', 'block_shop_course_seats').': <b>'.$availablecount.'</b>&nbsp;&nbsp;&nbsp;';
         $globalcounts .= get_string('running', 'block_shop_course_seats').': <b>'.$runningcount.'</b>&nbsp;&nbsp;&nbsp;';
@@ -285,18 +285,18 @@ class block_shop_course_seats_renderer extends plugin_renderer_base {
             $str .= '<td align="left">';
             if (@$participant->moodleid) {
                 if (file_exists($CFG->dirroot.'/theme/'.$PAGE->theme->name.'/favicon.jpg')) {
-                    $str .= '<img src="'.$OUTPUT->pix_url('favicon').'" title="'.$isuserstr.'" />';
+                    $str .= $OUTPUT->pix_icon('favicon', $isuserstr, 'core');
                 } else {
-                    $str .= '<img src="'.$OUTPUT->pix_url('i/moodle_host').'" title="'.$isuserstr.'" />';
+                    $str .= $OUTPUT->pix_icon('i/moodle_host', $isuserstr, 'core');
                 }
             } else {
-                $str .= '<img src="'.$OUTPUT->pix_url('new', 'local_shop').'" title="'.$isnotuserstr.'" />';
+                $str .= $OUTPUT->pix_icon('new', $isnotuserstr, 'local_shop');
             }
             $str .= '</td>';
             $str .= '<td align="right">';
             $str .= '<a title="'.get_string('deleteparticipant', 'local_shop').'"
                         href="Javascript:ajax_delete_user(\''.$CFG->wwwroot.'\', \''.$participant->email.'\')">';
-            $str .= '<img src="'.$OUTPUT->pix_url('t/delete').'" />';
+            $str .= $OUTPUT->pix_icon('t/delete', get_string('delete'), 'core');
             $str .= '</a>';
             $str .= '</td>';
             $str .= '</tr>';
@@ -462,7 +462,8 @@ class block_shop_course_seats_renderer extends plugin_renderer_base {
         $str .= '</td>';
         $str .= '<td align="right">';
         $str .= '<a href="Javascript:ajax_delete_assign(\''.$CFG->wwwroot.'\', \''.$role.'\', \''.$participant->email.'\')">';
-        $str .= '<img src="'.$OUTPUT->pix_url('t/delete').'" /></a>';
+        $str .= $OUTPUT->pix_icon('t/delete', get_string('delete'), 'core');
+        $str .= '</a>';
         $str .= '</td>';
         $str .= '</tr>';
 
