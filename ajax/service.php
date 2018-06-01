@@ -41,6 +41,11 @@ $instance = $DB->get_record('block_instances', array('id' => $blockid));
 $theblock = block_instance('shop_course_seats', $instance);
 $context = context::instance_by_id($instance->parentcontextid);
 
+if (!$course = $DB->get_record('course', array('id' => $context->instanceid))) {
+    return 'course error';
+}
+require_login($course);
+
 $products = block_shop_course_seats_get_products($USER->id);
 $unassigned = 0;
 $assigned = 0;
@@ -52,12 +57,6 @@ foreach ($products as $p) {
         $assigned++;
     }
 }
-
-if (!$course = $DB->get_record('course', array('id' => $context->instanceid))) {
-    return 'course error';
-}
-
-require_login($course);
 
 $PAGE->set_pagelayout('embedded');
 $PAGE->set_context($context);
