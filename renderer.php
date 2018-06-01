@@ -99,7 +99,7 @@ class block_shop_course_seats_renderer extends plugin_renderer_base {
         $producttable->align = array('left', 'left', 'left', 'left', 'right');
 
         foreach ($seats as $p) {
-            $pstart = ($p->startdate) ? date('Y/m/d h:i', $p->startdate) : 'N.C.';
+            $pstart = ($p->startdate) ? date(get_string('strftime'), $p->startdate) : 'N.C.';
             $pstr = '['.$p->code.'] '.$p->name;
             $params = array('id' => $COURSE->id,
                             'shopid' => $this->theblock->config->shopinstance,
@@ -110,7 +110,7 @@ class block_shop_course_seats_renderer extends plugin_renderer_base {
             $productext = $this->theblock->get_context_product_info($p);
             $productline = '<span class="cs-course-seat-code">['.$p->reference.']</span>'.$productext;
             if ($p->renewable) {
-                $pend = ($p->enddate) ? date('Y/m/d H:i', $p->enddate) : 'N.C.';
+                $pend = ($p->enddate) ? date(get_string('strftime'), $p->enddate) : 'N.C.';
                 if (time() > $p->enddate) {
                     // Expired.
                     $status = '<span class="cs-course-seat-expired">'.get_string('expired', 'block_shop_course_seats').'</span>';
