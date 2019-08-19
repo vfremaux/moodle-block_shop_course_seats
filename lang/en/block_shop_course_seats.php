@@ -25,6 +25,8 @@
 $string['shop_course_seats:addinstance'] = 'Add a Course seats block ';
 $string['shop_course_seats:manage'] = 'Manage seat statuses';
 
+// Privacy.
+$string['privacy:metadata'] = 'The Shop Course Seats block does not directly store any personal data about any user.';
 
 $string['addinguser'] = 'Add a user {$a->firstname} {$a->lastname}';
 $string['assignedto'] = '<b>Assigned to:</b> {$a}';
