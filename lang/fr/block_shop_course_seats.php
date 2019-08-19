@@ -22,8 +22,11 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['shop_course_seats:addinstance'] = 'Peut ajouter un bloc Sièges au cours';
-$string['shop_course_seats:manage'] = 'Peut gérer les sièges';
+$string['shop_course_seats:addinstance'] = 'Ajouter un bloc Sièges au cours';
+$string['shop_course_seats:manage'] = 'Gérer les sièges';
+
+// Privacy.
+$string['privacy:metadata'] = 'Le bloc Attribuer des Sièges ne détient directement aucune donnée relative aux utilisateurs.';
 
 $string['addinguser'] = 'Ajout d\'un utilisateur {$a->firstname} {$a->lastname}';
 $string['assignedto'] = '<b>Attribué à :</b> {$a}';
