@@ -27,15 +27,12 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->version   = 2016082700;        // The current plugin version (Date: YYYYMMDDXX).
-$plugin->requires  = 2019051100;        // Requires this Moodle version.
+$plugin->requires  = 2020061500;        // Requires this Moodle version.
 $plugin->component = 'block_shop_course_seats'; // Full name of the plugin (used for diagnostics).
 $plugin->maturity = MATURITY_RC;
-$plugin->release = '3.7.0 (Build 2013050300)';
-$plugin->dependencies = array('local_shop' => 2018033000);
+$plugin->release = '3.9.0 (Build 2016082700)';
+$plugin->supported = [39,311];
+$plugin->dependencies = array('local_shop' => 2022090900);
 
 // Non moodle attributes.
-<<<<<<< HEAD
-$plugin->codeincrement = '3.5.0000';
-=======
-$plugin->codeincrement = '3.7.0000';
->>>>>>> MOODLE_37_STABLE
+$plugin->codeincrement = '3.9.0000';
