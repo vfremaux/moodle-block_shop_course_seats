@@ -14,10 +14,20 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace block_shop_course_seats\privacy;
+/**
+ * Privacy provider
+ *
+ * @package     block_shop_discounts
+ * @author      Valery Fremaux <valery.fremaux@gmail.com>
+ * @copyright   Valery Fremaux <valery.fremaux@gmail.com> (activeprolearn.com)
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
-defined('MOODLE_INTERNAL') || die();
+namespace block_shop_discounts\privacy;
 
+/**
+ * Null provider
+ */
 class provider implements \core_privacy\local\metadata\null_provider {
     /**
      * Get the language string identifier with the component's language
@@ -25,7 +35,7 @@ class provider implements \core_privacy\local\metadata\null_provider {
      *
      * @return  string
      */
-    public static function get_reason() : string {
+    public static function get_reason(): string {
         return 'privacy:metadata';
     }
 }

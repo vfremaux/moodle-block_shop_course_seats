@@ -15,23 +15,23 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version details.
+ * Lang file
  *
- * @package     block_shop_discounts
+ * @package    block_shop_discounts
  * @author      Valery Fremaux <valery.fremaux@gmail.com>
- * @copyright   2016 onwards Valery Fremaux (http://www.activeprolearn.com)
- * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @copyright   Valery Fremaux <valery.fremaux@gmail.com> (activeprolearn.com)
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
+$string['shop_discounts:addinstance'] = 'Add an instance';
+$string['shop_discounts:myaddinstance'] = 'Add an instance to My Page';
 
-$plugin->version   = 2016022500;        // The current plugin version (Date: YYYYMMDDXX).
-$plugin->requires  = 2022112801;        // Requires this Moodle version.
-$plugin->component = 'block_shop_discounts'; // Full name of the plugin (used for diagnostics).
-$plugin->maturity = MATURITY_STABLE;
-$plugin->release = '4.1.0 (Build 2016022500)';
-$plugin->supported = [401, 402];
-$plugin->dependencies = ['local_shop' => 2022090900];
+// Privacy.
+$string['privacy:metadata'] = "The Shop Discounts Block does not directely store any data belonging to users";
 
-// Non moodle attributes.
-$plugin->codeincrement = '4.1.0001';
+$string['blockname'] = 'Discounts';
+$string['configtitle'] = 'Title';
+$string['leaveblanktohide'] = 'Leave blank to hide';
+$string['pluginname'] = 'Moodle Shop: Discounts';
+$string['discounts'] = 'Discounts';
+$string['limitedofferto'] = 'Offer limited to products: ';

@@ -15,32 +15,22 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Capability definitions for the shop dicounts block.
+ * Lang file
  *
  * @package    block_shop_discounts
- * @author      Valery Fremaux <valery.fremaux@gmail.com>
+ * @author    Valery Fremaux (valery.fremaux@gmail.com)
  * @copyright   Valery Fremaux <valery.fremaux@gmail.com> (activeprolearn.com)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
+$string['shop_discounts:addinstance'] = 'Peut ajouter une instance';
+$string['shop_discounts:myaddinstance'] = 'Peut ajouter une instance à la page personnelle';
 
-$capabilities = [
-
-    'block/shop_discounts:addinstance' => [
-        'captype' => 'read',
-        'contextlevel' => CONTEXT_COURSE,
-        'archetypes' => [
-            'manager' => CAP_ALLOW,
-        ],
-    ],
-
-    'block/shop_discounts:myaddinstance' => [
-        'captype' => 'read',
-        'contextlevel' => CONTEXT_SYSTEM,
-        'archetypes' => [
-            'manager' => CAP_ALLOW,
-        ],
-    ],
-];
-
+$string['blockname'] = 'Remises et promotions';
+$string['configtitle'] = 'Titre';
+$string['confighidetitle'] = 'Cacher le titre';
+$string['leaveblanktohide'] = 'Laisser vide pour le titre par défaut';
+$string['pluginname'] = 'Boutique : Remises et promotions';
+$string['discounts'] = 'Remises et promotions';
+$string['limitedofferto'] = 'Offre limitée aux produits : ';
+$string['entercode'] = 'Entrez le code';
