@@ -20,7 +20,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 // jshint unused: true, undef:true
-define(['jquery', 'core/log', 'core/cfg'], function ($, log, cfg) {
+define(['jquery', 'core/log', 'core/config'], function ($, log, cfg) {
 
     var blockshopdiscounts = {
 
@@ -30,7 +30,7 @@ define(['jquery', 'core/log', 'core/cfg'], function ($, log, cfg) {
             log.debug("Shop discount block AMD initialized");
         },
 
-        clear_discount_code(e) {
+        clear_discount_code: function(e) {
             e.preventDefault();
             e.stopPropagation();
 
@@ -48,7 +48,7 @@ define(['jquery', 'core/log', 'core/cfg'], function ($, log, cfg) {
             url += '&discountid=' + discountid;
 
             location.replace(url);
-        }
+        },
 
         submit_discount_form: function() {
             var that = $(this);

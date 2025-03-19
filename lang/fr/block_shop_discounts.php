@@ -34,3 +34,5 @@ $string['pluginname'] = 'Boutique : Remises et promotions';
 $string['discounts'] = 'Remises et promotions';
 $string['limitedofferto'] = 'Offre limitée aux produits : ';
 $string['entercode'] = 'Entrez le code';
+$string['clearcode'] = 'Effacer le code';
+

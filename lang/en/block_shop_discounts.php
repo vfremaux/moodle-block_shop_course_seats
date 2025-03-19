@@ -35,3 +35,5 @@ $string['leaveblanktohide'] = 'Leave blank to hide';
 $string['pluginname'] = 'Moodle Shop: Discounts';
 $string['discounts'] = 'Discounts';
 $string['limitedofferto'] = 'Offer limited to products: ';
+$string['entercode'] = 'Enter code';
+$string['clearcode'] = 'Clear';
