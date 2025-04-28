@@ -115,6 +115,17 @@ class block_shop_discounts extends block_base {
                 $template->discounts[] = $discounttpl;
             }
         }
+        if (optional_param('discountreload', false, PARAM_BOOL)) {
+            // Reload with complete session data the front URL location.
+            $params = [
+                'shopid' => optional_param('shopid', 0, PARAM_INT),
+                'view' => optional_param('view', 'shop', PARAM_TEXT),
+                'category' => optional_param('category', 0, PARAM_INT),
+                'blockid' => optional_param('blockid', 0, PARAM_INT),
+            ];
+            $fronturl = new moodle_url('/local/shop/front/view.php', $params);
+            redirect($fronturl);
+        }
 
         $this->content->text = $OUTPUT->render_from_template('block_shop_discounts/discounts', $template);
 

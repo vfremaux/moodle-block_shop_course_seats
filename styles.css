@@ -12,7 +12,7 @@ input.order-detail {
 }
 
 .discount-item input[type=text] {
-    font-size: 1.5em;
+    font-size: 1.3em;
     border: none;
     border-bottom: 1px solid gray;
     color: #aaa;
@@ -49,5 +49,10 @@ input.order-detail {
     content: "\f058 ";
     font-family: "FontAwesome";
     margin-right: 10px;
+}
+
+.discount-label p {
+    margin-top: 1.2rem;
+    margin-bottom: 0;
 }
 
