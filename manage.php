@@ -15,11 +15,11 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Form for editing block shop_products instances.
+ * Manage seats.
  *
  * @package   block_shop_course_seats
- * @category  blocks
- * @copyright 2013 Valery Fremaux (valery.fremaux@gmail.com)
+ * @author      Valery Fremaux <valery.fremaux@gmail.com>
+ * @copyright   Valery Fremaux <valery.fremaux@gmail.com> (activeprolearn.com)
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 require('../../config.php');
@@ -31,23 +31,23 @@ require_once($CFG->dirroot.'/blocks/shop_course_seats/forms/shop_course_seats_us
 require_once($CFG->dirroot.'/group/lib.php');
 
 use \local_shop\Shop;
-use \local_shop\Product;
-use \local_shop\BillItem;
+use local_shop\Product;
+use local_shop\BillItem;
 
 $id = required_param('id', PARAM_INT); // Course id.
 $blockid = required_param('blockid', PARAM_INT); // The current block id.
 
-$instance = $DB->get_record('block_instances', array('id' => $blockid));
+$instance = $DB->get_record('block_instances', ['id' => $blockid]);
 $theblock = block_instance('shop_course_seats', $instance);
 $theshop = new Shop($theblock->config->shopinstance);
 
-$url = new moodle_url('/blocks/shop_course_seats/manage.php', array('id' => $id, 'blockid' => $blockid));
+$url = new moodle_url('/blocks/shop_course_seats/manage.php', ['id' => $id, 'blockid' => $blockid]);
 $PAGE->set_url($url);
 
 $PAGE->requires->js('/blocks/shop_course_seats/js/seats.js.php?blockid='.$blockid);
 
-if (!$course = $DB->get_record('course', array('id' => $id))) {
-    print_error('coursemisconf');
+if (!$course = $DB->get_record('course',  ['id' => $id])) {
+    throw new moodle_exception('coursemisconf');
 }
 
 require_course_login($course);
@@ -74,17 +74,17 @@ foreach ($products as $p) {
 $renderer = $PAGE->get_renderer('block_shop_course_seats');
 $renderer->load_context($theshop, $theblock);
 
-$groupopts = array('' => get_string('newgroup', 'block_shop_course_seats'));
+$groupopts = ['' => get_string('newgroup', 'block_shop_course_seats')];
 if ($mygroups = groups_get_all_groups($COURSE->id, $USER->id)) {
     foreach ($mygroups as $gid => $g) {
         $groupopts[$gid] = $g->name;
     }
 }
 
-$userform = new ShopCourseSeatsUser_Form($url, array('groups' => $groupopts));
+$userform = new ShopCourseSeatsUser_Form($url, ['groups' => $groupopts]);
 
 if ($userform->is_cancelled()) {
-    redirect(new moodle_url('/course/view.php', array('id' => $course->id)));
+    redirect(new moodle_url('/course/view.php', ['id' => $course->id]));
 }
 
 if ($data = $userform->get_data()) {
@@ -92,7 +92,7 @@ if ($data = $userform->get_data()) {
 
     // Create required group if missing.
     if (!empty($data->newgroup)) {
-        if (!$group = $DB->get_record('groups', array('courseid' => $course->id, 'name' => $USER->id.'_'.$data->newgroup))) {
+        if (!$group = $DB->get_record('groups', ['courseid' => $course->id, 'name' => $USER->id.'_'.$data->newgroup])) {
             $group = new StdClass;
             $group->courseid = $course->id;
             $group->name = $USER->id.'_'.$data->newgroup;
@@ -105,7 +105,7 @@ if ($data = $userform->get_data()) {
             groups_add_member($group, $USER);
         }
     } else {
-        $group = $DB->get_record('groups', array('id' => $data->group));
+        $group = $DB->get_record('groups', ['id' => $data->group]);
     }
 
     // We are confirming assigning new users.
@@ -120,13 +120,13 @@ if ($data = $userform->get_data()) {
         $billitem = new BillItem($product->currentbillitemid);
 
         if (empty($productinfo->supervisor)) {
-            $supervisorrole = $DB->get_record('role', array('shortname' => 'teacher'));
+            $supervisorrole = $DB->get_record('role', ['shortname' => 'teacher']);
         } else {
-            $supervisorrole = $DB->get_record('role', array('shortname' => $productinfo->supervisor));
+            $supervisorrole = $DB->get_record('role', ['shortname' => $productinfo->supervisor]);
         }
 
         // Check we must create one or already registered.
-        if (!$potential = $DB->get_record('user', array('email' => $p->email))) {
+        if (!$potential = $DB->get_record('user', ['email' => $p->email])) {
             // Create a new account and bind it to the customer.
 
             $potential = shop_create_moodle_user($p, $billitem, $supervisorrole);
@@ -145,7 +145,7 @@ if ($data = $userform->get_data()) {
         $ret .= $handler->{$methodname}($data, $product);
         $ret .= "\n";
     }
-    $courseurl = new moodle_url('/course/view.php', array('id' => $id));
+    $courseurl = new moodle_url('/course/view.php', ['id' => $id]);
 
     unset($SESSION->shopseats);
 
@@ -191,12 +191,14 @@ if (!empty($SESSION->shopseats->participants)) {
         $i++;
     }
 }
+
 for (; $i < $unassigned; $i++) {
     echo $renderer->participant_blankrow();
 }
+
 echo '</table>';
 
-$userform->set_data(array('id' => $id, 'blockid' => $blockid));
+$userform->set_data(['id' => $id, 'blockid' => $blockid]);
 $userform->display();
 
 echo $OUTPUT->footer();

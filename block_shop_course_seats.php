@@ -18,8 +18,8 @@
  * Main block implementation.
  *
  * @package    block_shop_course_seats
- * @category   blocks
- * @copyright  2013 Valery Fremaux (valery.fremaux@gmail.com)
+ * @author      Valery Fremaux <valery.fremaux@gmail.com>
+ * @copyright   Valery Fremaux <valery.fremaux@gmail.com> (activeprolearn.com)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
  * This bloc provides a local way to manage the customer's owned seats from within
@@ -31,26 +31,44 @@ defined('MOODLE_INTERNAL') || die();
 require_once($CFG->dirroot.'/blocks/shop_course_seats/locallib.php');
 require_once($CFG->dirroot.'/local/shop/classes/Shop.class.php');
 
-use \local_shop\Shop;
+use local_shop\Shop;
 
+/**
+ * Main block class
+ */
 class block_shop_course_seats extends block_base {
 
+    /**
+     * Standard init
+     */
     public function init() {
         $this->title = get_string('blockname', 'block_shop_course_seats');
     }
 
+    /**
+     * Applicable formats
+     */
     public function applicable_formats() {
-        return array('all' => false, 'my' => false, 'course' => true);
+        return ['all' => false, 'my' => false, 'course' => true];
     }
 
+    /**
+     * Instance specialization
+     */
     public function specialization() {
         return false;
     }
 
+    /**
+     * Can we have multiples instances in context ?
+     */
     public function instance_allow_multiple() {
         return true;
     }
 
+    /**
+     * Main content
+     */
     public function get_content() {
         global $USER, $DB, $COURSE, $PAGE, $OUTPUT;
 
@@ -80,7 +98,7 @@ class block_shop_course_seats extends block_base {
         }
 
         $theshop = new Shop($this->config->shopinstance, true);
-        if (!$theshop->catalogid || !$DB->record_exists('local_shop_catalog', array('id' => $theshop->catalogid))) {
+        if (!$theshop->catalogid || !$DB->record_exists('local_shop_catalog', ['id' => $theshop->catalogid])) {
             $this->content->text = $OUTPUT->notification(get_string('errorconfig', 'block_shop_course_seats'), 'notifyfailure');
             return $this->content;
         }
@@ -94,7 +112,7 @@ class block_shop_course_seats extends block_base {
 
             // Check we are not in central position of a page format.
             if ($COURSE->format == 'page') {
-                $blockposition = $DB->get_record('block_positions', array('blockinstanceid' => $this->instance->id));
+                $blockposition = $DB->get_record('block_positions', ['blockinstanceid' => $this->instance->id]);
                 if (!$blockposition) {
                     if (@$this->defaultregion == 'main') {
                         $wide = true;
@@ -137,7 +155,7 @@ class block_shop_course_seats extends block_base {
             }
 
             if ($hasassignable) {
-                $params = array('id' => $COURSE->id, 'blockid' => $this->instance->id);
+                $params = ['id' => $COURSE->id, 'blockid' => $this->instance->id];
                 $manageurl = new moodle_url('/blocks/shop_course_seats/manage.php', $params);
                 $managestr = get_string('manageseats', 'block_shop_course_seats');
                 $this->content->footer = '<a href="'.$manageurl.'">'.$managestr.'</a>';
@@ -167,9 +185,9 @@ class block_shop_course_seats extends block_base {
         $str = '';
         switch ($product->contexttype) {
             case 'user_enrolment':
-                $ue = $DB->get_record('user_enrolments', array('id' => $product->instanceid));
-                $user = $DB->get_record('user', array('id' => $ue->userid));
-                $courseid = $DB->get_field('enrol', 'courseid', array('id' => $ue->enrolid));
+                $ue = $DB->get_record('user_enrolments', ['id' => $product->instanceid]);
+                $user = $DB->get_record('user', ['id' => $ue->userid]);
+                $courseid = $DB->get_field('enrol', 'courseid', ['id' => $ue->enrolid]);
                 $str .= $OUTPUT->box_start();
                 $str .= get_string('assignedto', 'block_shop_course_seats', fullname($user));
                 $str .= $OUTPUT->box_end();
@@ -177,8 +195,11 @@ class block_shop_course_seats extends block_base {
         return $str;
     }
 
+    /**
+     * Internal transform function
+     */
     private function _decode_url_parms($urlparms) {
-        $params = array();
+        $params = [];
         $parms = explode('&', $urlparms);
         foreach ($parms as $p) {
             list($key, $value) = explode('=', $p);
@@ -187,6 +208,9 @@ class block_shop_course_seats extends block_base {
         return $params;
     }
 
+    /**
+     * Add javascript to web UI
+     */
     public function get_required_javascript() {
         global $PAGE;
 

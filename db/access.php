@@ -18,30 +18,28 @@
  * Capability definitions.
  *
  * @package    block_shop_course_seats
- * @category   blocks
- * @copyright  2013 Valery Fremaux (valery.fremaux@gmail.com)
+ * @author    Valery Fremaux (valery.fremaux@gmail.com)
+ * @copyright   Valery Fremaux <valery.fremaux@gmail.com> (activeprolearn.com)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$capabilities = array(
+$capabilities = [
 
-    'block/shop_course_seats:addinstance' => array(
+    'block/shop_course_seats:addinstance' => [
         'captype' => 'read',
         'contextlevel' => CONTEXT_COURSE,
-        'archetypes' => array(
-            'manager' => CAP_ALLOW
-        )
-    ),
+        'archetypes' => [
+            'manager' => CAP_ALLOW,
+        ],
+    ],
 
-    'block/shop_course_seats:manage' => array(
+    'block/shop_course_seats:manage' => [
         'captype' => 'read',
         'contextlevel' => CONTEXT_COURSE,
-        'archetypes' => array(
-            'manager' => CAP_ALLOW
-        )
-    ),
-
-);
-
+        'archetypes' => [
+            'manager' => CAP_ALLOW,
+        ],
+    ],
+];

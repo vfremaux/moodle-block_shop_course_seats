@@ -16,7 +16,6 @@
 
 /**
  * @package     block_shop_course_seats
- * @category    blocks
  * @author      Valery Fremaux (valery.fremaux@gmail.com)
  * @copyright   2016 Valery Fremaux (valery.fremaux@gmail.com)
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -36,7 +35,8 @@ $string['blockname'] = 'Gérer les sièges';
 $string['configshopinstance'] = 'Boutique de référence';
 $string['configtitle'] = 'Titre';
 $string['enddate'] = 'Fin';
-$string['errorconfig'] = 'Le catalogue ne peut être trouvé. Il est possible que la boutique ne soit pas correctement configurée, ou que le catalogue ait été supprimé.';
+$string['errorconfig'] = 'Le catalogue ne peut être trouvé. Il est possible que la boutique ne soit pas correctement
+configurée, ou que le catalogue ait été supprimé.';
 $string['expired'] = 'Expiré';
 $string['expiring'] = 'Va expirer';
 $string['incourse'] = '<b>Dans le module :</b> [{$a->shortname}] {$a->fullname}';

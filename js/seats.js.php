@@ -15,11 +15,14 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Parametrized JS for course_seats
+ *
  * @package     block_shop_course_seats
- * @category    blocks
  * @author      Valery Fremaux (valery.fremaux@gmail.com)
  * @copyright   2016 Valery Fremaux (valery.fremaux@gmail.com)
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ *
+ * @todo : turn into AMD
  */
 
 require('../../../config.php');
@@ -27,14 +30,14 @@ require_once($CFG->dirroot.'/blocks/shop_course_seats/locallib.php');
 require_once($CFG->dirroot.'/local/shop/locallib.php');
 require_once($CFG->dirroot.'/local/shop/classes/Shop.class.php');
 
-use \local_shop\Shop;
+use local_shop\Shop;
 
 header("Content-type: text/javascript");
 header("Cache-Control: No-cache");
 
 $blockid = required_param('blockid', PARAM_INT);
 
-$instance = $DB->get_record('block_instances', array('id' => $blockid));
+$instance = $DB->get_record('block_instances', ['id' => $blockid]);
 $theblock = block_instance('shop_course_seats', $instance);
 $theshop = new Shop($theblock->config->shopinstance);
 

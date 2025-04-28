@@ -15,10 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Form for editing block shop_products instances.
+ * Product view (local to course_seats).
  *
  * @package   block_shop_course_seats
- * @category  blocks
  * @copyright 2013 Valery Fremaux (valery.fremaux@gmail.com)
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -41,17 +40,17 @@ $shopid = required_param('shopid', PARAM_INT); // The shop id.
 try {
     $product = new Product($productid);
 } catch (Exception $e) {
-    print_error('objectexception', 'block_shop_course_seats', $e->message);
+    throw new moodle_exception('objectexception', 'block_shop_course_seats', $e->message);
 }
 
 try {
     $catalogitem = new CatalogItem($product->catalogitemid);
 } catch (Exception $e) {
-    print_error('objectexception', 'block_shop_course_seats', $e->message);
+    throw new moodle_exception('objectexception', 'block_shop_course_seats', $e->message);
 }
 
-if (!$instance = $DB->get_record('block_instances', array('id' => $id))) {
-    print_error('badblockinstance', 'block_shop_course_seats');
+if (!$instance = $DB->get_record('block_instances', ['id' => $id])) {
+    throw new moodle_exception('badblockinstance', 'block_shop_course_seats');
 }
 
 $theblock = block_instance('shop_course_seats', $instance);
@@ -59,13 +58,13 @@ $theblock = block_instance('shop_course_seats', $instance);
 // TODO : Check customer identity against current user.
 
 // Get and check course from block context.
-if (!$course = $DB->get_record('course', array('id' => $theblock->context->instanceid))) {
-    print_error('coursemisconf');
+if (!$course = $DB->get_record('course', ['id' => $theblock->context->instanceid])) {
+    throw new moodle_exception('coursemisconf');
 }
 
 require_course_login($course);
 
-$url = new moodle_url('/blocks/shop_course_seats/products/view.php', array('id' => $id, 'productid' => $productid));
+$url = new moodle_url('/blocks/shop_course_seats/products/view.php', ['id' => $id, 'productid' => $productid]);
 $PAGE->set_url($url);
 $context = context_course::instance($course->id);
 $PAGE->set_context($context);
@@ -121,7 +120,7 @@ echo $handler->display_product_infos($productid, $productinfo);
 echo $OUTPUT->box_end();
 
 echo $OUTPUT->heading(get_string('purchase', 'block_shop_course_seats'), 3);
-$productevents = $DB->get_records('local_shop_productevent', array('productid' => $product->id));
+$productevents = $DB->get_records('local_shop_productevent', ['productid' => $product->id]);
 echo $OUTPUT->box_start('cs-product-billinfo-box block');
 
 $billitem = new BillItem($product->initialbillitemid);

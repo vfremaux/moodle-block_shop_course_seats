@@ -15,20 +15,20 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Capability definitions for the inwicast module.
+ * General library
  *
  * @package    block_shop_course_seats
- * @category   blocks
- * @copyright  2013 Valery Fremaux (valery.fremaux@gmail.com)
+ * @author      Valery Fremaux <valery.fremaux@gmail.com>
+ * @copyright   Valery Fremaux <valery.fremaux@gmail.com> (activeprolearn.com)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
-defined('MOODLE_INTERNAL') || die();
 
 /**
  * This function is not implemented in this plugin, but is needed to mark
  * the vf documentation custom volume availability.
+ * @param string $feature
+ * @param bool $getsupported
  */
-function block_shop_course_seats_supports_feature($feature) {
+function block_shop_course_seats_supports_feature($feature = null, $getsupported = false) {
     assert(1);
 }

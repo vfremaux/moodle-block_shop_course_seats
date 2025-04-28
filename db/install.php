@@ -16,13 +16,10 @@
 
 /**
  * @package     block_shop_course_seats
- * @category    blocks
  * @author      Valery Fremaux (valery.fremaux@gmail.com)
  * @copyright   2016 Valery Fremaux (valery.fremaux@gmail.com)
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
-defined('MOODLE_INTERNAL') || die();
 
 /**
  * Standard post install handler.
@@ -32,7 +29,7 @@ defined('MOODLE_INTERNAL') || die();
 function xmldb_block_shop_course_seats_install() {
     global $DB;
 
-    if ($role = $DB->get_record('role', array('shortname' => 'sales'))) {
+    if ($role = $DB->get_record('role', ['shortname' => 'sales'])) {
         $systemcontext = context_system::instance();
         role_change_permission($role->id, $systemcontext, 'block/shop_course_seats:manage', CAP_ALLOW);
     }

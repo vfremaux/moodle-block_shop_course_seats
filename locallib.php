@@ -15,20 +15,22 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Capability definitions for the inwicast module.
+ * Local library.
  *
  * @package    block_shop_course_seats
- * @category   blocks
- * @copyright  2013 Valery Fremaux (valery.fremaux@gmail.com)
+ * @author      Valery Fremaux <valery.fremaux@gmail.com>
+ * @copyright   Valery Fremaux <valery.fremaux@gmail.com> (activeprolearn.com)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
-
+/**
+ * Get the products
+ * @param int $userid
+ */
 function block_shop_course_seats_get_products($userid = 0) {
     global $DB, $COURSE;
 
-    $params = array($COURSE->id);
+    $params = [$COURSE->id];
     $userclause = '';
     if ($userid) {
         $userclause = " AND c.hasaccount = ? ";
@@ -81,6 +83,7 @@ function block_shop_course_seats_get_products($userid = 0) {
  * checks purchased products and quantities and calculates the neaded amount of seats.
  * We need check in catalog definition id product is seat driven or not. If seat driven
  * the quantity adds to seat couts. If not, 1 seat is added to the seat count.
+ * @param array $requiredroles
  */
 function shop_course_seats_check_assigned_seats($requiredroles) {
     global $SESSION;

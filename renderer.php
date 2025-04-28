@@ -18,8 +18,8 @@
  * Main renderer for this block.
  *
  * @package    block_shop_course_seats
- * @category   blocks
- * @copyright  2013 Valery Fremaux (valery.fremaux@gmail.com)
+ * @author      Valery Fremaux <valery.fremaux@gmail.com>
+ * @copyright   Valery Fremaux <valery.fremaux@gmail.com> (activeprolearn.com)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -28,25 +28,34 @@ defined('MOODLE_INTERNAL') || die();
 require_once($CFG->dirroot.'/local/shop/classes/Catalog.class.php');
 require_once($CFG->dirroot.'/local/shop/classes/Tax.class.php');
 
-use \local_shop\Catalog;
-use \local_shop\Tax;
+use local_shop\Catalog;
+use local_shop\Tax;
 
+/**
+ * Renderer for block shop_course_seats
+ */
 class block_shop_course_seats_renderer extends plugin_renderer_base {
 
-    // Context references.
+    /** @var object the block instance in context. */
     protected $theblock; // A course seat block instance.
 
+    /** @var object the shop instance in context. */
     protected $theshop;
 
+    /** @var object the catalog instance in context. */
     protected $thecatalog;
 
+    /** @var object the context. */
     public $context;
 
+    /** @var the curent view */
     public $view;
 
     /**
      * Loads the renderer with contextual objects. Most of the renderer function need
      * at least a shop instance.
+     * @param objectref &$theshop
+     * @param objectref &$theblock
      */
     public function load_context(&$theshop, &$theblock = null) {
 
@@ -68,6 +77,9 @@ class block_shop_course_seats_renderer extends plugin_renderer_base {
         }
     }
 
+    /**
+     * check block's context is valid
+     */
     public function check_context() {
         if (empty($this->theshop) || empty($this->thecatalog)) {
             throw new coding_exception('the renderer is not ready for use. Load a shop and a catalog before calling.');
@@ -75,7 +87,7 @@ class block_shop_course_seats_renderer extends plugin_renderer_base {
     }
 
     /**
-     * @param object $theblock the current course seat block instance
+     * Prints a product table
      * @param array $seats
      */
     public function product_table_wide($seats) {
@@ -92,19 +104,26 @@ class block_shop_course_seats_renderer extends plugin_renderer_base {
         $expiredcount = 0;
 
         $producttable = new html_table();
-        $producttable->head = array("<b>$pidstr</b>", "<b>$startdatestr</b>", "<b>$enddatestr</b>",
-            "<b>$productlinkstr</b>", "<b>$statusstr</b>");
+        $producttable->head = [
+            "<b>$pidstr</b>",
+            "<b>$startdatestr</b>",
+            "<b>$enddatestr</b>",
+            "<b>$productlinkstr</b>",
+            "<b>$statusstr</b>",
+        ];
         $producttable->width = '100%';
-        $producttable->size = array('10%', '10%', '10%', '40%', '30%');
-        $producttable->align = array('left', 'left', 'left', 'left', 'right');
+        $producttable->size = ['10%', '10%', '10%', '40%', '30%'];
+        $producttable->align = ['left', 'left', 'left', 'left', 'right'];
 
         foreach ($seats as $p) {
             $pstart = ($p->startdate) ? date(get_string('strftime'), $p->startdate) : 'N.C.';
             $pstr = '['.$p->code.'] '.$p->name;
-            $params = array('id' => $COURSE->id,
-                            'shopid' => $this->theblock->config->shopinstance,
-                            'blockid' => $this->theblock->instance->id,
-                            'pid' => $p->id);
+            $params = [
+                'id' => $COURSE->id,
+                'shopid' => $this->theblock->config->shopinstance,
+                'blockid' => $this->theblock->instance->id,
+                'pid' => $p->id,
+            ];
             $purl = new moodle_url('/blocks/shop_course_seats/product/view.php', $params);
             $status = '';
             $productext = $this->theblock->get_context_product_info($p);
@@ -126,7 +145,7 @@ class block_shop_course_seats_renderer extends plugin_renderer_base {
                     $pend = '<span class="cs-course-seat-runningdate">'.$pend.'</span>';
                     $runningcount++;
                 }
-                $producttable->data[] = array($productline, $pstart, $pend, '<a href="'.$purl.'">'.$pstr.'</a>', $status);
+                $producttable->data[] = [$productline, $pstart, $pend, '<a href="'.$purl.'">'.$pstr.'</a>', $status];
             } else {
                 if ($p->instanceid) {
                     $status = '<span class="cs-course-seat-running">'.get_string('running', 'block_shop_course_seats').'</span>';
@@ -135,7 +154,7 @@ class block_shop_course_seats_renderer extends plugin_renderer_base {
                     $status = '<span class="cs-course-seat-unused">'.get_string('available', 'block_shop_course_seats').'</span>';
                     $availablecount++;
                 }
-                $producttable->data[] = array($productline, $pstart, 'N.C.', '<a href="'.$purl.'">'.$pstr.'</a>', $status);
+                $producttable->data[] = [$productline, $pstart, 'N.C.', '<a href="'.$purl.'">'.$pstr.'</a>', $status];
             }
         }
 
@@ -162,6 +181,10 @@ class block_shop_course_seats_renderer extends plugin_renderer_base {
         return $str;
     }
 
+    /**
+     * Prints a product table in a narrow way
+     * @param array $seats
+     */
     public function product_table_narrow($seats) {
         global $COURSE, $OUTPUT;
 
@@ -173,18 +196,20 @@ class block_shop_course_seats_renderer extends plugin_renderer_base {
         $expiredcount = 0;
 
         $producttable = new html_table();
-        $producttable->head = array("<b>$productlinkstr</b>", "<b>$statusstr</b>");
+        $producttable->head = ["<b>$productlinkstr</b>", "<b>$statusstr</b>"];
         $producttable->width = '100%';
-        $producttable->size = array('70%', '30%');
-        $producttable->align = array('left', 'right');
+        $producttable->size = ['70%', '30%'];
+        $producttable->align = ['left', 'right'];
 
         foreach ($seats as $p) {
             $pstart = ($p->startdate) ? date('Y/m/d h:i', $p->startdate) : 'N.C.';
             $pstr = '['.$p->code.'] '.$p->name;
-            $params = array('id' => $COURSE->id,
-                            'shopid' => $this->theblock->config->shopinstance,
-                            'blockid' => $this->theblock->instance->id,
-                            'pid' => $p->id);
+            $params = [
+                'id' => $COURSE->id,
+                'shopid' => $this->theblock->config->shopinstance,
+                'blockid' => $this->theblock->instance->id,
+                'pid' => $p->id,
+            ];
             $purl = new moodle_url('/blocks/shop_course_seats/product/view.php', $params);
             $status = '';
             if ($p->renewable) {
@@ -206,7 +231,7 @@ class block_shop_course_seats_renderer extends plugin_renderer_base {
                 }
                 $productline = '<a href="'.$purl.'" title="'.$p->reference.'">'.$pstr.'</a><br/>';
                 $productline .= '<span class="smalltext">'.$pstart.' - '.$pend.'</span>';
-                $producttable->data[] = array($productline, $status);
+                $producttable->data[] = [$productline, $status];
             } else {
                 if ($p->instanceid) {
                     $status = '<span class="cs-course-seat-running">'.get_string('running', 'block_shop_course_seats').'</span>';
@@ -215,7 +240,7 @@ class block_shop_course_seats_renderer extends plugin_renderer_base {
                     $status = '<span class="cs-course-seat-unused">'.get_string('available', 'block_shop_course_seats').'</span>';
                     $availablecount++;
                 }
-                $producttable->data[] = array('<a href="'.$purl.'" title="'.$p->reference.'">'.$pstr.'</a><br/>'.$pstart, $status);
+                $producttable->data[] = ['<a href="'.$purl.'" title="'.$p->reference.'">'.$pstr.'</a><br/>'.$pstart, $status];
             }
         }
 
@@ -241,6 +266,10 @@ class block_shop_course_seats_renderer extends plugin_renderer_base {
         return $str;
     }
 
+    /**
+     * Print a participant row
+     * @todo : turn into template
+     */
     public function participant_row($participant = null) {
         global $CFG, $OUTPUT, $SITE, $PAGE;
 
@@ -283,7 +312,7 @@ class block_shop_course_seats_renderer extends plugin_renderer_base {
                 $str .= '</td>';
             }
             $str .= '<td align="left">';
-            if (@$participant->moodleid) {
+            if (!empty($participant->moodleid)) {
                 if (file_exists($CFG->dirroot.'/theme/'.$PAGE->theme->name.'/favicon.jpg')) {
                     $str .= $OUTPUT->pix_icon('favicon', $isuserstr, 'core');
                 } else {
@@ -335,6 +364,10 @@ class block_shop_course_seats_renderer extends plugin_renderer_base {
         return $str;
     }
 
+    /**
+     * Print a blank row.
+     * @todo : turn into template
+     */
     public function participant_blankrow() {
 
         $this->check_context();
@@ -377,6 +410,10 @@ class block_shop_course_seats_renderer extends plugin_renderer_base {
         return $str;
     }
 
+    /**
+     * Print a new participant row
+     * @todo : turn into template
+     */
     public function new_participant_row() {
         global $CFG;
 
@@ -448,6 +485,12 @@ class block_shop_course_seats_renderer extends plugin_renderer_base {
         return $str;
     }
 
+    /**
+     * Print role assignation row
+     * @param object $participant
+     * @param string $role
+     * @todo : turn into template
+     */
     public function assignation_row($participant, $role) {
         global $CFG, $OUTPUT;
 
@@ -455,10 +498,10 @@ class block_shop_course_seats_renderer extends plugin_renderer_base {
 
         $str .= '<tr>';
         $str .= '<td align="left">';
-        $str .= @$participant->lastname;
+        $str .= $participant->lastname ?? '';
         $str .= '</td>';
         $str .= '<td align="left">';
-        $str .= @$participant->firstname;
+        $str .= $participant->firstname ?? '';
         $str .= '</td>';
         $str .= '<td align="right">';
         $str .= '<a href="Javascript:ajax_delete_assign(\''.$CFG->wwwroot.'\', \''.$role.'\', \''.$participant->email.'\')">';
@@ -473,6 +516,8 @@ class block_shop_course_seats_renderer extends plugin_renderer_base {
     /**
      * prints a user selector for a product/role list from declared
      * participants removing already assigned people.
+     * @param string $role
+     * @todo : tunr into template and AMDize js
      */
     public function assignation_select($role) {
         global $SESSION, $CFG;
@@ -486,10 +531,10 @@ class block_shop_course_seats_renderer extends plugin_renderer_base {
         if (!empty($SESSION->shopseats->users[$role])) {
             $rkeys = array_keys($SESSION->shopseats->users[$role]);
         } else {
-            $rkeys = array();
+            $rkeys = [];
         }
 
-        $options = array();
+        $options = [];
         if (!empty($SESSION->shopseats->participants)) {
             foreach ($SESSION->shopseats->participants as $email => $pt) {
                 if (!in_array($email, $rkeys)) {
@@ -497,13 +542,18 @@ class block_shop_course_seats_renderer extends plugin_renderer_base {
                 }
             }
         }
-        $options = array('' => get_string('chooseparticipant', 'local_shop'));
+        $options = ['' => get_string('chooseparticipant', 'local_shop')];
         $attrs = array('onchange' => 'ajax_add_assign(\''.$CFG->wwwroot.'\', \''.$role.'\', this)');
         $str .= html_writer::select($options, 'addassign'.$role, '', $options, $attrs);
 
         return $str;
     }
 
+    /**
+     * Print a role list
+     * @param string $role current role
+     * @todo : turn into template
+     */
     public function role_list($role) {
         global $OUTPUT, $SESSION;
 
@@ -538,6 +588,10 @@ class block_shop_course_seats_renderer extends plugin_renderer_base {
         return $str;
     }
 
+    /**
+     * Print a form "send" button
+     * @todo : turn into template
+     */
     public function send_button() {
 
         $assignstr = get_string('assignseats', 'block_shop_course_seats');
@@ -551,6 +605,9 @@ class block_shop_course_seats_renderer extends plugin_renderer_base {
         return $str;
     }
 
+    /**
+     * Get JS for the block
+     */
     public function get_required_javascript() {
         global $PAGE;
 

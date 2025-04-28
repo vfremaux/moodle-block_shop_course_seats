@@ -16,7 +16,6 @@
 
 /**
  * @package     block_shop_course_seats
- * @category    blocks
  * @author      Valery Fremaux (valery.fremaux@gmail.com)
  * @copyright   2016 Valery Fremaux (valery.fremaux@gmail.com)
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -26,8 +25,14 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot.'/lib/formslib.php');
 
+/**
+ * Form for assigning users.
+ */
 class ShopCourseSeatsUser_Form extends moodleform {
 
+    /**
+     * Standard definition
+     */
     public function definition() {
         $mform = $this->_form;
 
@@ -48,6 +53,5 @@ class ShopCourseSeatsUser_Form extends moodleform {
         $mform->setType('newgroup', PARAM_TEXT);
 
         $this->add_action_buttons(get_string('assignseats', 'block_shop_course_seats'));
-
     }
 }
