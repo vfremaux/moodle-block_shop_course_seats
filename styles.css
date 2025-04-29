@@ -1,81 +1,58 @@
-.cs-course-seat-expired {
-    background-color: #f00000;
-    color: white;
-    font-weight: bolder;
-    padding: 3px;
+
+input.order-detail {
+    width: initial;
 }
 
-.cs-course-seat-expireddate {
-    color: #f00000;
+.shop-discount {
+    margin-bottom: 15px;
 }
 
-.cs-course-seat-expiring {
-    background-color: #F08000;
-    color: white;
-    font-weight: bolder;
-    padding: 3px;
+.discount-item input {
+    
 }
 
-.cs-course-seat-expiringdate {
-    color: #f08000;
-}
-
-.cs-course-seat-running {
-    background-color: #00a000;
-    color: white;
-    font-weight: bolder;
-    padding: 3px;
-}
-
-.cs-course-seat-unused {
-    background-color: #bdc4d9;
-    color: #51608c;
-    font-weight: bolder;
-    padding: 3px;
-}
-
-.cs-course-seat-expiringdate {
-    color: #00a000;
-}
-
-.cs-course-seat-code {
+.discount-item input[type=text] {
+    font-size: 1.3em;
+    border: none;
+    border-bottom: 1px solid gray;
+    color: #aaa;
+    width: 80%;
     font-family: monospace;
+    padding: 10px;
 }
 
-.cs-course-seat-key {
-    display: table-cell;
-    font-weight: bolder;
-    padding: 3px;
-    width: 150px;
+.discount-item.not-eligible {
+    opacity: 50%;
 }
 
-.cs-course-seat-value {
-    display: table-cell;
-    font-weight: normal;
-    padding: 3px;
-    width: 70%;
-}
-
-.cs-course-seat-value.monospace {
+.discount-item.has-value {
     font-family: monospace;
+    font-size: 2em;
+    text-align: center;
 }
 
-.cs-course-seat-bill {
-    font-size: 2.5em;
-    line-height: 2.2em;
+.discount-item.has-value .active-code.failed {
+    color: #ffaaaa;
 }
 
-.cs-course-seat-billitem {
-    display: table-cell;
-    font-size: 1.5em;
-    line-height: 1.2em;
+.active-code.failed::before {
+    content: "\f057 ";
+    font-family: "FontAwesome";
+    margin-right: 10px;
 }
 
-#cs-course-seat-toggler {
-    float: right;
+.discount-item.has-value .active-code.verified {
+    color: #88cc88;
 }
 
-/* Initial state */
-#cs-course-seats {
-    display: none;
+.active-code.verified::before {
+    content: "\f058 ";
+    font-family: "FontAwesome";
+    margin-right: 10px;
 }
+
+.discount-label p {
+    margin-top: 1.2rem;
+    margin-bottom: 0;
+}
+

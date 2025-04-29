@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Capability definitions for the shop dicounts block.
+ * Lang file
  *
  * @package    block_shop_discounts
  * @author      Valery Fremaux <valery.fremaux@gmail.com>
@@ -23,24 +23,17 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
+$string['shop_discounts:addinstance'] = 'Add an instance';
+$string['shop_discounts:myaddinstance'] = 'Add an instance to My Page';
 
-$capabilities = [
+// Privacy.
+$string['privacy:metadata'] = "The Shop Discounts Block does not directely store any data belonging to users";
 
-    'block/shop_discounts:addinstance' => [
-        'captype' => 'read',
-        'contextlevel' => CONTEXT_COURSE,
-        'archetypes' => [
-            'manager' => CAP_ALLOW,
-        ],
-    ],
-
-    'block/shop_discounts:myaddinstance' => [
-        'captype' => 'read',
-        'contextlevel' => CONTEXT_SYSTEM,
-        'archetypes' => [
-            'manager' => CAP_ALLOW,
-        ],
-    ],
-];
-
+$string['blockname'] = 'Discounts';
+$string['configtitle'] = 'Title';
+$string['leaveblanktohide'] = 'Leave blank to hide';
+$string['pluginname'] = 'Moodle Shop: Discounts';
+$string['discounts'] = 'Discounts';
+$string['limitedofferto'] = 'Offer limited to products: ';
+$string['entercode'] = 'Enter code';
+$string['clearcode'] = 'Clear';
