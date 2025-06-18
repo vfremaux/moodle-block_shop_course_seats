@@ -17,7 +17,7 @@
 /**
  * Version details.
  *
- * @package     block_shop_discounts
+ * @package     block_shop_course_seats
  * @author      Valery Fremaux <valery.fremaux@gmail.com>
  * @copyright   2016 onwards Valery Fremaux (http://www.activeprolearn.com)
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -27,11 +27,11 @@ defined('MOODLE_INTERNAL') || die();
 
 $plugin->version   = 2025011400;        // The current plugin version (Date: YYYYMMDDXX).
 $plugin->requires  = 2022112801;        // Requires this Moodle version.
-$plugin->component = 'block_shop_discounts'; // Full name of the plugin (used for diagnostics).
-$plugin->maturity = MATURITY_STABLE;
+$plugin->component = 'block_shop_course_seats'; // Full name of the plugin (used for diagnostics).
+$plugin->maturity = MATURITY_RC;
 $plugin->release = '4.5.0 (Build 2025011400)';
 $plugin->supported = [401, 405];
 $plugin->dependencies = ['local_shop' => 2025011400];
 
 // Non moodle attributes.
-$plugin->codeincrement = '4.5.0001';
+$plugin->codeincrement = '4.5.0000';
