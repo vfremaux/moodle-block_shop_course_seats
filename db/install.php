@@ -15,26 +15,24 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Privacy provider
- *
  * @package     block_shop_course_seats
- * @author      Valery Fremaux <valery.fremaux@gmail.com>
- * @copyright   Valery Fremaux <valery.fremaux@gmail.com> (activeprolearn.com)
+ * @author      Valery Fremaux (valery.fremaux@gmail.com)
+ * @copyright   2016 Valery Fremaux (valery.fremaux@gmail.com)
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-namespace block_shop_course_seats\privacy;
 
 /**
- * Null provider
+ * Standard post install handler.
+ *
+ * Adds capability to the shop sales role.
  */
-class provider implements \core_privacy\local\metadata\null_provider {
-    /**
-     * Get the language string identifier with the component's language
-     * file to explain why this plugin stores no data.
-     *
-     * @return  string
-     */
-    public static function get_reason(): string {
-        return 'privacy:metadata';
+function xmldb_block_shop_course_seats_install() {
+    global $DB;
+
+    if ($role = $DB->get_record('role', ['shortname' => 'sales'])) {
+        $systemcontext = context_system::instance();
+        role_change_permission($role->id, $systemcontext, 'block/shop_course_seats:manage', CAP_ALLOW);
     }
+
+    return true;
 }

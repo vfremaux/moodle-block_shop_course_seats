@@ -17,7 +17,7 @@
 /**
  * General library
  *
- * @package    block_shop_discounts
+ * @package    block_shop_course_seats
  * @author      Valery Fremaux <valery.fremaux@gmail.com>
  * @copyright   Valery Fremaux <valery.fremaux@gmail.com> (activeprolearn.com)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -29,6 +29,6 @@
  * @param string $feature
  * @param bool $getsupported
  */
-function block_shop_discounts_supports_feature($feature = null, $getsupported = false) {
+function block_shop_course_seats_supports_feature($feature = null, $getsupported = false) {
     assert(1);
 }

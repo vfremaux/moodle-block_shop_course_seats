@@ -15,34 +15,41 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Form to esit instance
+ * Form for editing block shop_course_seats instances.
  *
- * @package   block_shop_discounts
+ * @package   block_shop_course_seats
  * @author      Valery Fremaux <valery.fremaux@gmail.com>
  * @copyright   Valery Fremaux <valery.fremaux@gmail.com> (activeprolearn.com)
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 /**
- * form edition classs
+ * Instance edition form
  */
-class block_shop_discounts_edit_form extends block_edit_form {
+class block_shop_course_seats_edit_form extends block_edit_form {
 
     /**
-     * specific definition
+     * Specific definition
      * @param moodle_form $mform
      */
     protected function specific_definition($mform) {
+        global $DB;
 
         // Fields for editing HTML block title and contents.
         $mform->addElement('header', 'configheader', get_string('blocksettings', 'block'));
 
-        $mform->addElement('text', 'config_title', get_string('configtitle', 'block_shop_discounts'));
-        $mform->setDefault('config_title', get_string('pluginname', 'block_shop_discounts'));
+        $mform->addElement('text', 'config_title', get_string('configtitle', 'block_shop_course_seats'));
+        $mform->setDefault('config_title', get_string('pluginname', 'block_shop_course_seats'));
         $mform->setType('config_title', PARAM_MULTILANG);
 
-        $mform->addElement('checkbox', 'config_hidetitle', get_string('confighidetitle', 'block_shop_discounts'));
-        $mform->setDefault('config_hidetitle', 0);
-        $mform->setType('config_hidetitle', PARAM_BOOL);
+        $shops = $DB->get_records('local_shop');
+        if ($shops) {
+            foreach ($shops as $sh) {
+                $opts[$sh->id] = $sh->name;
+            }
+            $mform->addElement('select', 'config_shopinstance', get_string('configshopinstance', 'block_shop_course_seats'), $opts);
+        } else {
+            $mform->addElement('static', 'noshops', get_string('noshops', 'block_shop_course_seats'));
+        }
     }
 }

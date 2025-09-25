@@ -15,10 +15,10 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Capability definitions for the shop dicounts block.
+ * Capability definitions.
  *
- * @package    block_shop_discounts
- * @author      Valery Fremaux <valery.fremaux@gmail.com>
+ * @package    block_shop_course_seats
+ * @author    Valery Fremaux (valery.fremaux@gmail.com)
  * @copyright   Valery Fremaux <valery.fremaux@gmail.com> (activeprolearn.com)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -27,7 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 
 $capabilities = [
 
-    'block/shop_discounts:addinstance' => [
+    'block/shop_course_seats:addinstance' => [
         'captype' => 'read',
         'contextlevel' => CONTEXT_COURSE,
         'archetypes' => [
@@ -35,12 +35,11 @@ $capabilities = [
         ],
     ],
 
-    'block/shop_discounts:myaddinstance' => [
+    'block/shop_course_seats:manage' => [
         'captype' => 'read',
-        'contextlevel' => CONTEXT_SYSTEM,
+        'contextlevel' => CONTEXT_COURSE,
         'archetypes' => [
             'manager' => CAP_ALLOW,
         ],
     ],
 ];
-
